@@ -1,0 +1,253 @@
+/* ===========================================================
+   NOCTORYA - BRAND TOKENS
+   ----------------------------------------------------------
+   Project:    Noctorya
+   File:       brand-tokens.css
+   Purpose:    Design tokens foundation for Shopify Dawn fork.
+   Source:     08_DEEP_RESEARCH/folder3_design/design_system.md
+               01_BLUEPRINT/Noctorya_MasterBlueprint_Part2_Design_Build.md
+               (Sections 11.1 through 11.6)
+   Generated:  2026-05-11
+   Theme:      "The Minimal Black Gallery" - cold dark theme.
+   ----------------------------------------------------------
+   USAGE
+   1. Place at: theme/assets/brand-tokens.css
+   2. Load in layout/theme.liquid (after Dawn's base.css):
+      {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
+   3. The Dawn override block at the bottom redefines Dawn's
+      RGB-triplet color and font variables; load order matters.
+   ----------------------------------------------------------
+   CONVENTIONS
+   - Token names match source specs verbatim (unprefixed).
+   - All color combinations WCAG AA validated per
+     design_system.md section 1.
+   - No component styles in this file (tokens only).
+   - V2-corrected values applied: text-tertiary #838383,
+     error #D46A6A, bg-primary #111111, H1/H2 weight 500.
+   =========================================================== */
+
+:root {
+
+  /* === COLORS === */
+
+  /* Backgrounds */
+  --color-bg-primary: #111111;          /* page bg, near-pure black */
+  --color-bg-secondary: #181818;        /* cards, elevated surfaces, footer */
+  --color-bg-tertiary: #1F1F1F;         /* input fields, subtle containers */
+  --color-bg-hover: #252525;            /* hover on cards/rows */
+
+  /* Text */
+  --color-text-primary: #F0F0F0;        /* headings, primary body */
+  --color-text-secondary: #B0B0B0;      /* captions, meta, nav links */
+  --color-text-tertiary: #838383;       /* disabled text (V2 WCAG fix, was #707070) */
+
+  /* Accents */
+  --color-accent-primary: #A8A8A8;            /* silver/platinum CTA, links */
+  --color-accent-primary-hover: #C0C0C0;
+  --color-accent-secondary: #1A1A2E;          /* deep navy badge */
+  --color-accent-secondary-hover: #24243E;
+
+  /* UI */
+  --color-border: #2A2A2A;
+  --color-border-subtle: #1F1F1F;
+  --color-overlay: rgba(17, 17, 17, 0.88);    /* modal overlay */
+
+  /* Status */
+  --color-success: #6B9F6B;
+  --color-error: #D46A6A;               /* V2 WCAG fix, was #C45B5B */
+
+  /* Marquee */
+  --color-marquee-bg: #F0F0F0;
+  --color-marquee-text: #111111;
+
+  /* === TYPOGRAPHY === */
+
+  /* Font families (self-hosted WOFF2) */
+  --font-heading: 'Bodoni Moda', Didot, 'Bodoni MT', Georgia, serif;
+  --font-body: 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Font weights (role-specific) */
+  --font-display-weight: 400;           /* OK only at >=48px hero */
+  --font-h1-weight: 500;                /* V2: bumped from 400 */
+  --font-h2-weight: 500;
+  --font-h3-weight: 600;
+  --font-button-weight: 500;
+  --font-price-weight: 600;
+
+  /* Font sizes - mobile / desktop pairs (DS section 2 type scale) */
+  --fs-display-mobile: 36px;
+  --fs-display-desktop: 64px;
+  --fs-h1-mobile: 28px;
+  --fs-h1-desktop: 42px;
+  --fs-h2-mobile: 24px;
+  --fs-h2-desktop: 32px;
+  --fs-h3-mobile: 20px;
+  --fs-h3-desktop: 24px;
+  --fs-body-mobile: 15px;
+  --fs-body-desktop: 16px;
+  --fs-body-sm-mobile: 13px;
+  --fs-body-sm-desktop: 14px;
+  --fs-caption-mobile: 11px;
+  --fs-caption-desktop: 12px;
+  --fs-label-mobile: 11px;
+  --fs-label-desktop: 12px;
+  --fs-price-mobile: 18px;
+  --fs-price-desktop: 20px;
+  --fs-artist-mobile: 12px;
+  --fs-artist-desktop: 14px;
+  --fs-nav-mobile: 14px;
+  --fs-nav-desktop: 14px;
+  --fs-button-mobile: 14px;
+  --fs-button-desktop: 14px;
+  --fs-marquee-mobile: 11px;
+  --fs-marquee-desktop: 13px;
+
+  /* Line heights */
+  --lh-display: 1.05;
+  --lh-h1: 1.15;
+  --lh-h2: 1.2;
+  --lh-h3: 1.25;
+  --lh-body: 1.7;                       /* V2 spec */
+  --lh-body-sm: 1.55;
+  --lh-caption: 1.4;
+  --lh-tight: 1;                        /* nav, button, marquee */
+
+  /* Letter spacing */
+  --ls-display: -0.02em;
+  --ls-h1: -0.01em;
+  --ls-h2: 0;
+  --ls-h3: 0.01em;
+  --ls-body: 0;
+  --ls-caption: 0.04em;
+  --ls-label: 0.18em;                   /* ALL-CAPS wide tracking */
+  --ls-price: 0.02em;
+  --ls-artist: 0.18em;                  /* SIGNATURE TRAIT - gallery wall-label */
+  --ls-nav: 0.08em;
+  --ls-button: 0.12em;
+  --ls-marquee: 0.2em;
+
+  /* Artist-name signature trait (composite, Part 2 11.3) */
+  --font-artist-weight: 400;
+  --font-artist-style: normal;
+  --font-artist-transform: uppercase;
+  --font-artist-ls: 0.18em;
+
+  /* Body global */
+  --font-body-lh: 1.7;
+  --font-body-ls: 0;
+
+  /* === SPACING === */
+  /* 4px grid, 8px base unit (DS section 3) */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 120px;
+
+  /* === LAYOUT === */
+  /* Container + product grid per breakpoint (DS section 3 grid table) */
+
+  --container-max-mobile: 100%;
+  --container-max-tablet: 100%;
+  --container-max-desktop: 1280px;
+  --container-pad-mobile: 16px;
+  --container-pad-tablet: 24px;
+  --container-pad-desktop: 40px;
+  --grid-cols-mobile: 2;
+  --grid-cols-tablet: 3;
+  --grid-cols-desktop: 4;
+  --grid-gap-mobile: 12px;
+  --grid-gap-tablet: 16px;
+  --grid-gap-desktop: 20px;
+
+  /* === BORDERS === */
+  /* Sharp modernist gallery default (DS section 4 / Part 2 11.6) */
+
+  --radius-default: 0;
+
+  /* === SHADOWS === */
+  /* Heavy due to dark base; used sparingly (DS section 7) */
+
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-dropdown: 0 8px 32px rgba(0, 0, 0, 0.7);
+  --shadow-modal: 0 16px 48px rgba(0, 0, 0, 0.8);
+
+  /* === ANIMATIONS === */
+  /* Transitions (DS section 8) */
+
+  --transition-fast: 0.15s ease;
+  --transition-default: 0.25s ease;
+  --transition-slow: 0.4s ease;
+  --transition-scroll: 0.6s ease-out;
+
+  /* === BREAKPOINTS === */
+  /* Informational only. CSS custom properties CANNOT be evaluated
+     inside @media queries; thresholds must be duplicated as literals
+     in component CSS @media blocks. Dawn standard. */
+
+  --breakpoint-tablet: 750px;
+  --breakpoint-desktop: 990px;
+
+  /* === Z-INDEX SCALE === */
+  /* SOURCE NOT FOUND: z-index scale - escalate to Eduard before use */
+
+  /* === FOCUS INDICATORS === */
+  /* WCAG 2.4.7. BOTH outline AND box-shadow required (Windows High
+     Contrast Mode suppresses shadows). DS section 9 / Part 2 11.5. */
+
+  --focus-outline-color: #F0F0F0;
+  --focus-outline-width: 3px;
+  --focus-outline-offset: 2px;
+  --focus-ring-color: #111111;
+  --focus-ring-width: 6px;
+
+  /* === BUTTONS === */
+  /* Primary CTA (Part 2 11.6) */
+
+  --btn-primary-bg: #F0F0F0;
+  --btn-primary-text: #111111;
+  --btn-primary-hover-bg: #FFFFFF;
+  --btn-primary-radius: 0;
+}
+
+/* ===========================================================
+   DAWN THEME OVERRIDES
+   ----------------------------------------------------------
+   Dawn stores colors as R,G,B triplets and references them via
+   rgba(var(--color-foo), alpha). These overrides redefine Dawn's
+   color and font variables to Noctorya values.
+
+   Load order: this file must be loaded AFTER Dawn's base.css so
+   these declarations take precedence by source order.
+
+   Source: design_system.md section 11 + Part 2 section 11.2.
+   =========================================================== */
+
+:root,
+.color-scheme-1 {
+  --color-background: 17, 17, 17;            /* #111111 */
+  --color-foreground: 240, 240, 240;         /* #F0F0F0 */
+  --color-button: 240, 240, 240;             /* #F0F0F0 */
+  --color-button-text: 17, 17, 17;           /* #111111 */
+  --color-secondary-button-text: 168, 168, 168;
+  --color-link: 168, 168, 168;               /* #A8A8A8 */
+  --color-badge-foreground: 240, 240, 240;
+  --color-badge-background: 26, 26, 46;      /* #1A1A2E */
+  --color-shadow: 0, 0, 0;
+}
+
+:root {
+  --font-body-family: 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading-family: 'Bodoni Moda', Didot, 'Bodoni MT', Georgia, serif;
+  --font-heading-weight: 500;
+  --font-body-weight: 400;
+}
+
+/* End of brand-tokens.css */
