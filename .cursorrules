@@ -1,0 +1,124 @@
+# Noctorya - Shopify Dawn Fork Rules
+
+NOTE: At dawn/ repo root. Cursor auto-loads from here. ../ prefixed paths refer to sibling dirs in NOCTORYA/ parent.
+
+## Project
+
+- Shopify Dawn fork. Dark theme. Brand concept: "The Minimal Black Gallery".
+- Design system encoded in assets/brand-tokens.css (108 CSS custom properties).
+- Branches: main (working code) + live/noctorya (production deploy target).
+- All design values come from ../01_BLUEPRINT/Noctorya_MasterBlueprint_Part2_Design_Build.md.
+  Section 11 is the design bible. NEVER invent values.
+
+## Tech stack
+
+- Shopify Liquid + pure CSS (no SCSS, no LESS) + vanilla JS (no jQuery).
+- Self-hosted WOFF2: Bodoni Moda 400/500 + Inter 400/500/600. NEVER Google Fonts CDN.
+- BEM naming for new components. Mobile-first media queries.
+- Dawn breakpoints (DO NOT change): 0-749 mobile, 750-989 tablet, 990+ desktop.
+
+## File structure
+
+- Custom sections: sections/[kebab-name].liquid with full schema + presets.
+- Custom snippets: snippets/[kebab-name].liquid.
+- Custom CSS: assets/[component-name].css (one file per section or component).
+- App overrides: assets/custom-app-overrides.css (Judge.me, Picture It AR, Wishlist Hero, Selleasy).
+- Custom JS: assets/[component-name].js.
+- NEVER modify Dawn core files unless the task explicitly says "modify Dawn X".
+
+## CSS rules
+
+- Reference vars from assets/brand-tokens.css: var(--color-bg-primary), var(--space-4), etc.
+- NEVER redeclare a token already defined in brand-tokens.css.
+- BEM convention:
+  - Block: .product-card
+  - Element: .product-card__title (double underscore)
+  - Modifier: .product-card__title--featured (double hyphen)
+- Mobile-first @media: default = mobile, then @media (min-width: 750px) tablet,
+  @media (min-width: 990px) desktop.
+- Component scoping: one CSS file per top-level section. File name matches:
+  sections/trust-bar.liquid -> assets/trust-bar.css.
+- NO inline styles except dynamic section padding (template-driven Liquid output).
+- NO !important outside assets/custom-app-overrides.css (third-party namespace exception).
+- Global rules belong in assets/base.css: -webkit-font-smoothing, -moz-osx-font-smoothing,
+  font-optical-sizing: none, body line-height 1.7, letter-spacing 0.
+
+## Liquid conventions
+
+- Use {% render %} not {% include %} ({% include %} is deprecated).
+- App blocks pattern inside custom sections: {%- when '@app' -%} {% render block %}.
+- Multi-step string composition: {% capture %} ... {% endcapture %}.
+- Single-value bindings: {% assign %}.
+- Section padding mobile: desktop value times 0.75 via {{ desktop_pad | times: 0.75 | round: 0 }}.
+- Schema settings for per-section editable values (Customizer); theme settings for global.
+- Always include schema presets so the section is reusable in the theme editor.
+
+## Naming conventions
+
+- File names: kebab-case (.liquid, .css, .js). NEVER Title Case or ALL CAPS in filenames.
+- CSS classes: BEM lowercase kebab-case.
+- Schema setting IDs: snake_case (e.g., product_picker, color_accent).
+- Liquid variable names: snake_case.
+- JS variable names: camelCase. JS class names: PascalCase.
+
+## Brand-tokens.css integration
+
+- Load order in layout/theme.liquid: assets/base.css then assets/brand-tokens.css.
+- brand-tokens.css contains :root custom properties PLUS a Dawn override block
+  (:root, .color-scheme-1 { --color-background, --color-foreground, ... }).
+- Component CSS references tokens via var(--foo); never redeclare or hard-code values.
+
+## Voice canon for microcopy
+
+- All customer-facing text follows the Noctorya voice canon (anonymous critic writing for Eleanor, the buyer persona)
+  (../08_DEEP_RESEARCH/folder2_strategy/voice_canon.md).
+- Cold, factual, manifesto-like. No marketing buzzwords.
+- Second-person ("you", "your") banned in body copy; allowed in CTAs and headings only.
+- ALL CAPS for headings/CTAs only; never for emphasis in body text.
+- Title format: [Artist Last Name]: [Painting Title]. URL slug: artist-lastname-painting-name.
+
+## Performance
+
+- Hero image: loading="eager", fetchpriority="high".
+- Collection grid: first 4 products loading="eager"; rest loading="lazy".
+- All non-critical images: loading="lazy".
+- JS scripts: defer or async by default; no synchronous third-party scripts.
+- Font preload: 2 fonts only (inter-400.woff2 + bodoni-moda-500.woff2).
+- font-display: swap for heading fonts; font-display: optional for body fonts.
+- Lighthouse target: Mobile score >= 60 (Master Dispatcher Task 071).
+- /links page: system fonts only, inline CSS in <style>, no external stylesheet, <2s LCP on 3G.
+
+## Accessibility
+
+- Semantic HTML: header, nav, main, section, article, footer.
+  ARIA roles only when semantic element is insufficient.
+- WCAG 2.4.7 focus indicators: BOTH outline AND box-shadow required (Windows High Contrast
+  Mode suppresses shadows). See base.css :focus-visible.
+- Touch targets: 48px minimum on mobile interactive elements.
+- Color contrast: WCAG AA validated combinations documented in brand-tokens.css comments;
+  do not pair tokens outside the validated set.
+- Alt text: 80-125 chars, factual, includes artist + title + product type.
+
+## NEVER DO
+
+- NEVER use Bodoni Moda for body text. Headings >= 24px at weight 500+ only.
+- NEVER use light backgrounds. Noctorya is dark from the ground up.
+- NEVER use Google Fonts CDN. Self-hosted WOFF2 only.
+- NEVER use jQuery. Dawn is vanilla JS.
+- NEVER use localStorage or sessionStorage in Liquid context (unsupported in Shopify).
+- NEVER use Google Tag Manager. Use native Google/Meta/TikTok channels.
+- NEVER use emoji in code, comments, or filenames.
+- NEVER use !important outside assets/custom-app-overrides.css.
+- NEVER invent color, spacing, or typography values. Reference brand-tokens.css.
+- NEVER use em dashes in customer-facing microcopy. Use period, comma, or colon.
+- NEVER use dropdowns for product variants. Pills with dimensions AND price only.
+- NEVER pre-select a size on variant selectors.
+- NEVER skip WCAG focus indicators to save time.
+- NEVER enable cart drawer on mobile <990px. Cart drawer is desktop-only;
+  mobile redirects to /cart page via JS.
+- NEVER create files outside the theme directory unless the task explicitly requests.
+
+## When stuck
+
+- Reference the specific Blueprint Part 2 section number in your question to Eduard.
+- Check assets/brand-tokens.css for available tokens before requesting new values.
