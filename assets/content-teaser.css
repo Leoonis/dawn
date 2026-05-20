@@ -3,6 +3,7 @@
    ----------------------------------------------------------
    Task 054. Two-column desktop / stacked mobile teaser
    pairing a featured painting with a blog story excerpt.
+   Heading sits full-width above the 2-column row.
    Tokens: brand-tokens.css. BEM. Mobile-first.
    =========================================================== */
 
@@ -14,6 +15,12 @@
 .content-teaser__container {
   max-width: var(--container-max-desktop);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.content-teaser__row {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -78,7 +85,7 @@
     padding: 64px var(--container-pad-desktop);
   }
 
-  .content-teaser__container {
+  .content-teaser__row {
     flex-direction: row;
     gap: var(--space-7);
     align-items: center;
