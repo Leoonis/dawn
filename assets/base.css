@@ -3595,3 +3595,62 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* === Noctorya global base styles === */
+/* html: smooth scroll + Firefox scrollbar styling (does not override Dawn font-size scaling) */
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-foreground), 0.2) rgb(var(--color-background));
+}
+
+/* body: brand fonts + tokens + font smoothing for crisp serif rendering on dark bg */
+body {
+  font-family: var(--font-body-family);
+  color: rgb(var(--color-foreground));
+  background: rgb(var(--color-background));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* Headings: Bodoni Moda serif at brand weight */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  color: rgb(var(--color-foreground));
+}
+
+/* Text selection: inverted brand colors */
+::selection {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+/* Webkit scrollbar: minimal dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  background: rgb(var(--color-background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-foreground), 0.2);
+  border-radius: 4px;
+}
+
+/* Focus indicator: WCAG 2.4.7 visible focus on keyboard navigation */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+/* Links: underline appears on hover only */
+a {
+  color: rgb(var(--color-link));
+  text-decoration: underline transparent;
+  transition: text-decoration-color 200ms;
+}
+
+a:hover {
+  text-decoration-color: rgb(var(--color-link));
+}
