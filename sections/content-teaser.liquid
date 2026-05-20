@@ -1,0 +1,61 @@
+{{ 'content-teaser.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign product = section.settings.product
+  assign blog_post = section.settings.blog_post
+  assign excerpt = section.settings.excerpt
+-%}
+
+{%- if product != blank and blog_post != blank -%}
+<section class="content-teaser" aria-label="Featured story">
+  <div class="content-teaser__container">
+    <h2 class="content-teaser__heading">THE STORIES</h2>
+    <a href="{{ product.url }}" class="content-teaser__image-link" aria-label="View {{ product.title | escape }}">
+      <img
+        class="content-teaser__image"
+        src="{{ product.featured_image | image_url: width: 1200 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="{{ product.featured_image.width }}"
+        height="{{ product.featured_image.height }}"
+      >
+    </a>
+    <div class="content-teaser__text">
+      <p class="content-teaser__excerpt">{{ excerpt }}</p>
+      <a href="{{ blog_post.url }}" class="content-teaser__cta">
+        Read the Story &rarr;
+      </a>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Content Teaser",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Featured painting"
+    },
+    {
+      "type": "blog",
+      "id": "blog_post",
+      "label": "Featured blog post"
+    },
+    {
+      "type": "textarea",
+      "id": "excerpt",
+      "label": "Excerpt (1-2 sentences from blog post)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Teaser"
+    }
+  ]
+}
+{% endschema %}

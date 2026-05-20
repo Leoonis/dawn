@@ -89,6 +89,14 @@
         "container_width": "default"
       }
     },
+    "content_teaser": {
+      "type": "content-teaser",
+      "settings": {
+        "product": "",
+        "blog_post": "",
+        "excerpt": ""
+      }
+    },
     "rich_text": {
       "type": "rich-text",
       "blocks": {
@@ -245,6 +253,7 @@
   "order": [
     "image_banner",
     "trust_bar",
+    "content_teaser",
     "rich_text",
     "featured_collection",
     "collage",

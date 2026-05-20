@@ -1,0 +1,108 @@
+/* ===========================================================
+   NOCTORYA - CONTENT TEASER
+   ----------------------------------------------------------
+   Task 054. Two-column desktop / stacked mobile teaser
+   pairing a featured painting with a blog story excerpt.
+   Tokens: brand-tokens.css. BEM. Mobile-first.
+   =========================================================== */
+
+.content-teaser {
+  background-color: var(--color-bg-primary);
+  padding: 48px var(--container-pad-mobile);
+}
+
+.content-teaser__container {
+  max-width: var(--container-max-desktop);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.content-teaser__heading {
+  font-family: var(--font-heading);
+  font-weight: var(--font-h2-weight);
+  font-size: var(--fs-h2-mobile);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.content-teaser__image-link {
+  display: block;
+  text-decoration: none;
+}
+
+.content-teaser__image {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  display: block;
+}
+
+.content-teaser__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.content-teaser__excerpt {
+  font-family: var(--font-body);
+  font-size: var(--fs-body-mobile);
+  line-height: var(--lh-body);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.content-teaser__cta {
+  font-family: var(--font-body);
+  font-size: var(--fs-button-mobile);
+  font-weight: var(--font-button-weight);
+  letter-spacing: var(--ls-button);
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-default);
+}
+
+.content-teaser__cta:hover,
+.content-teaser__cta:focus-visible {
+  color: var(--color-accent-primary-hover);
+}
+
+@media (min-width: 990px) {
+  .content-teaser {
+    padding: 64px var(--container-pad-desktop);
+  }
+
+  .content-teaser__container {
+    flex-direction: row;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .content-teaser__image-link {
+    flex: 0 0 60%;
+  }
+
+  .content-teaser__image {
+    max-height: none;
+  }
+
+  .content-teaser__text {
+    flex: 0 0 40%;
+    padding-left: var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .content-teaser__heading {
+    font-size: var(--fs-h2-desktop);
+  }
+
+  .content-teaser__excerpt {
+    font-size: var(--fs-body-desktop);
+  }
+}
