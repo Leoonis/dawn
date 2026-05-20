@@ -1,6 +1,6 @@
 # NOCTORYA - SESSION STATE
 
-**Last updated:** 2026-05-20 02:30 Europe/Bucharest by Cowork
+**Last updated:** 2026-05-20 post-Task-054 Europe/Bucharest by Cowork
 **Audience:** HQ Claude (web-based) reading at session start. Dense, exhaustive, NOT executive summary.
 **Read this FIRST at every new HQ Claude session.** This is the canonical context document.
 
@@ -82,18 +82,21 @@
 
 ---
 
-## 4. CURRENT STATE (as of 2026-05-20 02:30 Europe/Bucharest)
+## 4. CURRENT STATE (as of 2026-05-20 post-Task-054 Europe/Bucharest)
 
 **Git state (verified on disk via `git -C dawn log --oneline -15`):**
 
-- HEAD SHA (local main and origin/main): `2aa3d9d68d32113cafbbbcc716fd20786a26ab7c`
+- HEAD SHA (local main and origin/main): `23a4360c99e3441156e6903546b810481d70bc78`
 - Active branch: `main` (also has `live/noctorya` branch, both local and remote)
-- Working tree: 313 files showing as modified (CRLF/LF drift from original Dawn checkout; benign per ADR established earlier; NOT real content drift)
-- Commits ahead of upstream Dawn: 10
+- Working tree: 313 files showing as modified (CRLF/LF drift from original Dawn checkout; benign per ADR established earlier; NOT real content drift). ALWAYS use explicit `git add <pathspec>` to avoid inflating commit scope with this drift; see Section 16.1 Issue 8.
+- Commits ahead of upstream Dawn: 13
 
-**Commit log (last 11 commits, newest first):**
+**Commit log (last 15 commits, newest first):**
 
 ```
+23a4360 Task 054 fix: wrap image+text in __row, heading full-width above (desktop layout fix)
+8b83cca Task 054: build Content Teaser custom section (product + blog teaser, 2-column desktop / stacked mobile)
+0865f11 Add SESSION_STATE.md for cross-session Claude continuity
 2aa3d9d Task 053 fix: replace middle-dot literal with &middot; HTML entity for Shopify CLI compatibility
 9afd1a1 Task 053: build Trust Bar custom section (4 badges, inline SVG icons)
 4f2a7eb Task 052: render custom-fonts snippet + append Noctorya global base styles to base.css
@@ -105,13 +108,14 @@
 6762ea4 Task 048: install self-hosted WOFF2 fonts (Bodoni Moda 400+500, Inter 400+500+600) to dawn/assets/
 73f3987 Task 046: install dawn/CLAUDE.md, dawn/.cursorrules, and gitignore .claude/
 9ccdacf Better release notes  (last upstream Dawn commit before Noctorya branched)
+7482e90 Bump theme version and add release notes
 ```
 
 **Phase D progress:**
-- 11 of 29 logical Phase D tasks complete (37.9%)
+- 12 of 29 logical Phase D tasks complete (41.4%)
 - Foundation Layer: DONE (Tasks 043-052: Node, fork, branches, rules files, fonts, brand-tokens, scheme propagation, custom-fonts snippet, base.css globals)
-- Custom sections built: 1 of 9 (trust-bar)
-- Next immediate task: 054 Hero section
+- Custom sections built: 2 of 9 (trust-bar, content-teaser)
+- Next immediate task: 055 Artist Scroll
 
 ---
 
@@ -1537,7 +1541,7 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 
 ## 10. PHASE D PROGRESS DETAIL
 
-### 10.1 COMPLETED (11 logical tasks)
+### 10.1 COMPLETED (12 logical tasks)
 
 | # | Task | Executor | Commit SHA | Key decisions / learnings / gotchas |
 |---|---|---|---|---|
@@ -1553,15 +1557,16 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 | 052 | Wire custom-fonts.liquid + Noctorya globals in base.css | Claude Code | `4f2a7eb` | Render custom-fonts.liquid snippet in theme.liquid. Append +59 lines to base.css: -webkit-font-smoothing, -moz-osx-font-smoothing, body line-height 1.7, letter-spacing 0, font-optical-sizing: none, :focus-visible WCAG 2.4.7 (both outline AND box-shadow). |
 | 053 | Trust Bar custom section build | Claude Code | `9afd1a1` | sections/trust-bar.liquid (4273B) + assets/trust-bar.css (2576B) + templates/index.json edit (insert trust-bar section). 4 badges with lucide-style inline SVG icons. Mobile 2x2 grid, desktop single row per Master Blueprint Part 2 Section 9.1. |
 | 053-fix | Replace middle-dot literal with HTML entity | Claude Code | `2aa3d9d` | Shopify CLI rejected `·` (U+00B7 bytes C2 B7) in trust-bar.liquid. Replaced with `&middot;` HTML entity. Section 9.5 mechanism discovery. |
+| 054 | Content Teaser custom section build | Claude Code | `8b83cca` | sections/content-teaser.liquid + assets/content-teaser.css + templates/index.json edit (insert content-teaser section after trust-bar). Two-column desktop (image 60% / text 40%) + stacked mobile. Schema: product picker, blog_post picker, excerpt textarea, optional heading override. CTA renders silver text-button `READ MORE →` linking to blog post; image links to product page. Padding 64px desktop / 48px mobile per Trust Bar precedent (desktop * 0.75). |
+| 054-fix | Layout fix + variable rename | Claude Code | `23a4360` | Two sub-fixes in one commit: (a) wrap image-column + text-column in `.content-teaser__row` so heading sits full-width above the two columns; (b) rename local Liquid variable `product` -> `featured_product` (Shopify reserved-name shadowing was causing Shopify CLI "illegal characters" sync error). See Section 16.1 Issue 7 for the variable-shadowing mechanism. |
 
-### 10.2 PENDING (18 logical Phase D tasks)
+### 10.2 PENDING (17 logical Phase D tasks)
 
-**Custom sections (10 to build, 1 already done in Task 053):**
+**Custom sections (8 remaining; Trust Bar Task 053 and Content Teaser Task 054 already done):**
 
 | # | Section | Spec source | Complexity | Blockers |
 |---|---|---|---|---|
-| 054 | **Hero** (next immediate) | Master Blueprint Part 2 Section 9.2 + page_specs_part1.md Section 3 | STANDARD-PLUS (pattern-defining for 055-062) | None |
-| 055 | Artist Scroll | Master Blueprint Part 2 Section 9.1 + artist_metaobject_schema_definition.md | STANDARD | BLOCKED by Task 069 (Shopify admin Artist Metaobject) |
+| 055 | **Artist Scroll** (next immediate) | Master Blueprint Part 2 Section 9.1 + page_specs_part1.md Section 7 + artist_metaobject_schema_definition.md | STANDARD | BLOCKED by Task 069 (Shopify admin Artist Metaobject) |
 | 056 | Movement Grid | Master Blueprint Part 2 Section 9.1 + movement data structure | STANDARD | Depends on movement definitions (Baroque, Realism, Symbolism, etc) |
 | 057 | Why Choose Us | Master Blueprint Part 2 Section 9.1 | STANDARD | None |
 | 058 | Provenance Letter (Painting of the Week per Master Dispatcher Task 058) | Master Blueprint Part 2 Section 9.1 | STANDARD (copy-heavy) | None |
@@ -1574,7 +1579,7 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 
 | # | Modification | Files affected | Blockers |
 |---|---|---|---|
-| 063 | Hero modify (replaces Dawn image_banner with right-aligned text + "THE ART YOU LIVE WITH") | `dawn/sections/image-banner.liquid` | None - OVERLAPS with Task 054 (decide if 054 is new section or 063 is the modify) |
+| 063 | Hero modify (replaces Dawn image_banner with right-aligned text + "THE ART YOU LIVE WITH") | `dawn/sections/image-banner.liquid` | None. Distinct from Task 054 Content Teaser (different homepage position; resolved per Section 16.3 verdict). |
 | 064 | Header mega menu with featured image | `dawn/sections/header.liquid`, `dawn/snippets/header-mega-menu.liquid` | None |
 | 065 | Product page (sticky gallery, accordions, app blocks) | `dawn/sections/main-product.liquid` | BLOCKED by Task 068 (metafields) |
 | 066 | Cart drawer desktop / page mobile | `dawn/sections/cart-drawer.liquid`, `dawn/assets/cart.js`, `dawn/templates/cart.json` | None |
@@ -2059,22 +2064,23 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 ## 14. NEXT IMMEDIATE TASK
 
-**Task 054 - Hero section.**
+**Task 055 - Artist Scroll custom section.**
 
-- **Spec source:** Master Blueprint Part 2 Section 9.2 (after Trust Bar in homepage order) + page_specs_part1.md Section 3 + component_specs.md Hero block
-- **Position:** Homepage Section 3 (replaces or overrides Dawn `image_banner` which currently shows boat illustration with light theme)
+- **Master Dispatcher line:** `| **055** | Build custom section: Artist Scroll | Claude Code | Section 9.1 | .liquid section | Theme sections/ |` (canonical; verify against `01_BLUEPRINT/Noctorya_Master_Task_Dispatcher.md` line ~142, NOT against prior Section 14 content - see Section 16.3 resolved verdict on derivation drift).
+- **Spec source:** Master Blueprint Part 2 Section 9.1 + page_specs_part1.md Section 7 ("Shop by Artist") + artist_metaobject_schema_definition.md (sub at `04_CONTENT/noctorya/shopify_imports/`).
+- **Position:** Homepage Section 7 (after Content Teaser, before Room Lifestyle).
+- **Pattern:** Horizontal scroll of artist cards using Dawn's `<slider-component>` web component. Square portraits, ALL-CAPS Inter artist names, painting-count caption. 5-6 visible desktop, 3 visible mobile with scroll-snap.
 - **Recommended audit sequence:**
-  1. HQ Claude generates Cowork prompt to dump Hero spec from research docs (component_specs.md + page_specs_part1.md + Master Blueprint Part 2 Section 9.2 + content_requirements.md if Hero copy is canonicalized there)
-  2. HQ identifies gaps in spec (typical: 7-10 gaps similar to Task 053 audit)
-  3. Operator confirms decisions or accepts HQ recommendations
-  4. HQ generates Meta-Prompt v3 Task 054 prompt for CC
-  5. CC executes (target commit chain: hero.liquid + hero.css + index.json update + any image_banner override)
-  6. Visual verification at localhost:9292 (shopify theme dev)
-  7. Screenshot to HQ for visual approval
-  8. Update SESSION_STATE.md via Cowork (this file; append Task 054 entry to Section 10.1; commit + push to origin/main)
-- **Expected complexity:** STANDARD-PLUS (single section but pattern-defining for Tasks 055-062)
-- **Known blockers:** none (no metaobject or metafield dependency)
-- **Open question for HQ to clarify with operator:** does Task 054 (new Hero section) replace Task 063 (Hero modify of Dawn image_banner)? Master Dispatcher lists both. Recommended interpretation: Task 054 builds NEW custom hero section that replaces image_banner usage in index.json; Task 063 is a clean-up pass on the abandoned image_banner.liquid file (or deletion). Operator decision pending.
+  1. HQ Claude generates Cowork prompt to dump Artist Scroll spec from research docs. **Cowork audit Lateral Finding 1 (Task 054 audit): SKIP `component_specs.md` for Tasks 055-062.** Reason: component_specs.md scopes itself to cross-page reusable UI atoms (Product Card, Mega Menu, Cart Drawer, Hero, etc.) and deliberately omits the 9 page-specific custom sections. Per-section specs live in page_specs_part1.md (homepage sections) + Master Blueprint Part 2 Section 9.x + content_requirements.md (canonical copy).
+  2. HQ identifies gaps in spec (Task 053 produced 7-10 gaps; Task 054 produced 15 + 3 cross-doc conflicts; Task 055 may have similar fan-out given metaobject dependency).
+  3. Operator confirms decisions or accepts HQ recommendations.
+  4. HQ generates Meta-Prompt v3 Task 055 prompt for CC.
+  5. CC executes (target commit chain: artist-scroll.liquid + artist-scroll.css + index.json update). Use explicit `git add` pathspec per Section 16.1 Issue 8.
+  6. Visual verification at localhost:9292 (shopify theme dev). Restart `shopify theme dev` between rapid iterations per Section 16.1 Issue 9.
+  7. Screenshot to HQ for visual approval.
+  8. Update SESSION_STATE.md via Cowork (this file; append Task 055 entry to Section 10.1; commit + push to origin/main).
+- **Expected complexity:** STANDARD-BLOCKED. The build itself is STANDARD (slider-component is Dawn built-in; cards are simple). But Task 055 is BLOCKED by Task 069 (Shopify admin Artist Metaobject creation); CC needs the metaobject definition to exist before the Liquid `metaobjects.artist` query resolves to non-empty data. Operator may proceed with a stub-data interim build (hardcoded sample artists in schema presets) and re-wire to metaobjects post-Task-069.
+- **Known blockers:** Task 069 Artist Metaobject definition (Shopify admin step; pending Shopify reactivation per Section 16.1 baseline state). Operator decision needed: stub-interim build now vs wait-for-069.
 
 ---
 
@@ -2110,6 +2116,14 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 6. **Edit-tool truncation bug confirmed on Windows-mount.** Observed twice in 2026-05-19 session (cross_border_tax_compliance_map.md + SESSION_HANDOFF_CONTEXT.md). Root cause: bindfs + Edit-tool byte-count parity. ALL future edits use Python or Write tool. No exceptions.
 
+7. **Variable shadowing on Shopify reserved names in .liquid files.** Local Liquid variables that collide with Shopify's reserved names (e.g. `product`, `collection`, `article`, `blog`, `customer`) trigger "illegal characters" error during `shopify theme dev` sync. Workaround: prefix local variables with `featured_` or another non-reserved pattern (e.g. `featured_product`, `featured_article`). Confirmed via Task 054 debugging session. Reference commit `23a4360` for the rename pattern (`{% assign product = ... %}` rewritten to `{% assign featured_product = ... %}`).
+
+8. **`git commit` without explicit pathspec inflates scope with the 313 baseline CRLF/LF drift deletions.** A bare `git commit -a` or `git commit` after `git add -A` will stage all 313 baseline drift files as deletions on top of the intended changes, producing catastrophically over-scoped commits (observed: 382 files changed, ~135k deletions). ALWAYS use `git add <explicit-paths>` followed by `git commit` (without -a, without -A). Discovered via Task 054 first commit attempt (intermediate SHA `25847ec`, rolled back via `git reset HEAD~1`). Verify scope with `git show --stat HEAD` before push.
+
+9. **Shopify CLI temp-file naming bug on Windows paths with spaces.** `shopify theme dev` writes `.tmp.HASH` retry files during sync; these fail naming validation ("contains illegal characters") on Windows-mount path `D:\A.Noctorya folder\NOCTORYA\dawn`. Direct (non-temp) sync path succeeds. Symptom: multiple rapid edits to the same .liquid file pile up stale retry queue entries, eventually blocking further sync. Workaround: restart `shopify theme dev` between rapid iterations to clear the queue. Long-term: consider relocating dawn/ to a path without spaces if symptom recurs frequently.
+
+10. **Customizer pickers reset after `shopify theme dev` restart.** Product, blog, and metaobject_reference pickers in section schema settings lose their values after a theme-dev restart. Plain-text settings (excerpt textarea, heading text, etc.) persist correctly. Operator must re-populate picker values manually post-restart during visual verification workflow. Affects QA tempo for sections that depend on picker-supplied data (Content Teaser, Artist Biography, Painting of the Week).
+
 ### 16.2 Resolved during 2026-05-18 to 2026-05-19 sessions
 
 1. **FIX-1 Eleanor role clarification** (2026-05-19). 3 documentation files corrected (SESSION_HANDOFF_CONTEXT.md Section 1 + Section 3 sentence-length + decisions_log_full.md entry). Eleanor reframed as buyer persona; the Noctorya voice is the anonymous critic.
@@ -2122,9 +2136,13 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 5. **Task 053 trust-bar middle-dot byte rejection** (Task 053-fix, commit 2aa3d9d). HTML entity workaround established for non-ASCII bytes in .liquid files.
 
+6. **Task 054 illegal-characters debug arc** (Task 054-fix, commit 23a4360, 2026-05-20). Initial Content Teaser build (commit 8b83cca) used `{% assign product = section.settings.product %}` which collided with Shopify's reserved `product` global, producing repeated "contains illegal characters" sync errors and `.tmp.HASH` retry pile-up in shopify theme dev. Resolution: renamed the local Liquid variable to `featured_product`. Two operational learnings: (a) Shopify reserved-name shadowing pattern (Section 16.1 Issue 7); (b) Shopify CLI temp-file naming bug on Windows-mount paths with spaces (Section 16.1 Issue 9). Same commit also corrected the desktop layout by wrapping the image-column + text-column in `.content-teaser__row` so the heading renders full-width above the two columns instead of sharing the left column.
+
+7. **Task 054 vs Task 063 overlap resolved.** See Section 16.3 verdict moved to resolved here in this update. Section 14 derivation error that contaminated the next-task instruction also fixed in this update.
+
 ### 16.3 Open question to surface with operator at next session
 
-- Task 054 vs Task 063 overlap: are these two separate tasks (new Hero section + clean-up Dawn image_banner) or is Task 063 the implementation of Task 054 by way of modifying Dawn's `image-banner.liquid`? Master Task Dispatcher lists both. Recommended interpretation pending operator confirmation.
+- ~~Task 054 vs Task 063 overlap~~ RESOLVED 2026-05-20. **Verdict: Master Dispatcher is canonical.** Task 054 = Build Content Teaser custom section (DONE, commits 8b83cca + 23a4360). Task 063 = Modify Dawn Hero (image_banner) - PENDING, distinct from Task 054. The Section 14 derivation error that mislabeled Task 054 as "Hero" was a SESSION_STATE drift created during the 2026-05-20 02:30 compose pass; the derivation took Task 053's "Hero" follow-up cue from Task 053-fix progress notes rather than reading the Master Dispatcher row for Task 054. **Future SESSION_STATE updates must verify Section 14 against Master Dispatcher line numbers (file `01_BLUEPRINT/Noctorya_Master_Task_Dispatcher.md`), NOT against prior Section 14 content.** Derivation-from-prior-state is now the established failure mode; canonical-source verification is the required pattern.
 - dawn/.cursorrules (6367 B, on disk at Task 046 commit) vs 05_THEME/.cursorrules (6464 B post-FIX-4): the dawn-repo version was installed BEFORE FIX-4 propagation. FIX-4 scope was 9 files; dawn/.cursorrules was not in scope. Result: dawn/.cursorrules may still contain "Eleanor voice canon" phrasing that 05_THEME/.cursorrules no longer has. Flag for future fix prompt if HQ chooses to propagate.
 
 ---
