@@ -1,0 +1,112 @@
+/* ===========================================================
+   NOCTORYA - Trust Bar
+   ----------------------------------------------------------
+   Section: trust-bar (4 trust signal badges)
+   Layout: 2x2 grid mobile (<750px), single row tablet/desktop
+           with middle-dot separators
+   Tokens consumed: --space-2/3/4/6, --container-*,
+                    --color-accent-primary, --color-text-secondary,
+                    --font-body-family, --fs-label-*, --ls-label
+   =========================================================== */
+
+.trust-bar {
+  padding-top: var(--trust-bar-padding, var(--space-6));
+  padding-bottom: var(--trust-bar-padding, var(--space-6));
+}
+
+.trust-bar__container {
+  max-width: var(--container-max-desktop);
+  margin: 0 auto;
+  padding-left: var(--container-pad-mobile);
+  padding-right: var(--container-pad-mobile);
+}
+
+.trust-bar__container--wide {
+  max-width: 1500px;
+}
+
+.trust-bar__container--full {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Mobile (default): 2x2 grid */
+.trust-bar__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+  justify-items: center;
+}
+
+.trust-bar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.trust-bar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent-primary);
+  flex-shrink: 0;
+}
+
+.trust-bar__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.trust-bar__label {
+  font-family: var(--font-body-family);
+  font-size: var(--fs-label-mobile);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  line-height: 1;
+}
+
+/* Mobile: separator hidden (2x2 layout has no inline separators) */
+.trust-bar__separator {
+  display: none;
+}
+
+/* Tablet and up: single horizontal row with middle-dot separators */
+@media (min-width: 750px) {
+  .trust-bar__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .trust-bar__separator {
+    display: inline-block;
+    color: var(--color-text-secondary);
+    font-size: var(--fs-label-desktop);
+    user-select: none;
+  }
+
+  .trust-bar__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .trust-bar__label {
+    font-size: var(--fs-label-desktop);
+  }
+}
+
+@media (min-width: 990px) {
+  .trust-bar__container {
+    padding-left: var(--container-pad-desktop);
+    padding-right: var(--container-pad-desktop);
+  }
+}
