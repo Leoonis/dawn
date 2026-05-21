@@ -1,6 +1,6 @@
 # NOCTORYA - SESSION STATE
 
-**Last updated:** 2026-05-20 post-Task-054 Europe/Bucharest by Cowork
+**Last updated:** 2026-05-20 post-Task-066 Europe/Bucharest by Cowork
 **Audience:** HQ Claude (web-based) reading at session start. Dense, exhaustive, NOT executive summary.
 **Read this FIRST at every new HQ Claude session.** This is the canonical context document.
 
@@ -82,18 +82,20 @@
 
 ---
 
-## 4. CURRENT STATE (as of 2026-05-20 post-Task-054 Europe/Bucharest)
+## 4. CURRENT STATE (as of 2026-05-20 post-Task-066 Europe/Bucharest)
 
 **Git state (verified on disk via `git -C dawn log --oneline -15`):**
 
-- HEAD SHA (local main and origin/main): `23a4360c99e3441156e6903546b810481d70bc78`
+- HEAD SHA (local main and origin/main): `b8ce537fa301f63968c155d61946d5c20a815add`
 - Active branch: `main` (also has `live/noctorya` branch, both local and remote)
 - Working tree: 313 files showing as modified (CRLF/LF drift from original Dawn checkout; benign per ADR established earlier; NOT real content drift). ALWAYS use explicit `git add <pathspec>` to avoid inflating commit scope with this drift; see Section 16.1 Issue 8.
-- Commits ahead of upstream Dawn: 13
+- Commits ahead of upstream Dawn: 15
 
 **Commit log (last 15 commits, newest first):**
 
 ```
+b8ce537 Task 066: cart drawer mobile redirect (cart_type=drawer + single-point viewport guard)
+ed25ad7 SESSION_STATE: post-Task-054 update (HEAD 23a4360; 12/29 Phase D; 4 new known issues; Section 14 fix)
 23a4360 Task 054 fix: wrap image+text in __row, heading full-width above (desktop layout fix)
 8b83cca Task 054: build Content Teaser custom section (product + blog teaser, 2-column desktop / stacked mobile)
 0865f11 Add SESSION_STATE.md for cross-session Claude continuity
@@ -107,15 +109,14 @@
 1cfc3df Task 049: create snippets/custom-fonts.liquid (@font-face + 2 preloads)
 6762ea4 Task 048: install self-hosted WOFF2 fonts (Bodoni Moda 400+500, Inter 400+500+600) to dawn/assets/
 73f3987 Task 046: install dawn/CLAUDE.md, dawn/.cursorrules, and gitignore .claude/
-9ccdacf Better release notes  (last upstream Dawn commit before Noctorya branched)
-7482e90 Bump theme version and add release notes
 ```
 
 **Phase D progress:**
-- 12 of 29 logical Phase D tasks complete (41.4%)
+- 13 of 29 logical Phase D tasks complete (44.8%)
 - Foundation Layer: DONE (Tasks 043-052: Node, fork, branches, rules files, fonts, brand-tokens, scheme propagation, custom-fonts snippet, base.css globals)
 - Custom sections built: 2 of 9 (trust-bar, content-teaser)
-- Next immediate task: 055 Artist Scroll
+- Dawn baseline modifications built: 1 of 5 (cart drawer mobile redirect)
+- Next immediate task: 064a Header base (split candidate per Lateral Finding 1; POD-independent + spec-complete)
 
 ---
 
@@ -288,6 +289,18 @@ ADRs reconstructed from HQ_REBRIEF_PHASE_D.md (already on disk at project root, 
 | Rationale | External regulatory change. Materially affects US shipping economics. Interacts with tax-collection (DDP vs DDU decision per shipment). |
 | Files Affected | Shipping policy, customer-facing FAQ (US section), Phase D legal-pages references, Phase G supplier coordination (Incoterm choice). |
 | Source | `08_DEEP_RESEARCH/folder2_strategy/cross_border_tax_compliance_map.md` Section 2.8 sidebar |
+
+### ADR-16: Cart pattern decision RE-VALIDATED via tri-AI debate (ADR-08 confirmed canonical)
+
+| Field | Content |
+|---|---|
+| ID | ADR-16 |
+| Date | 2026-05-20 (Task 066 pre-build challenge round) |
+| Decision | ADR-08 cart pattern (drawer desktop >=990px / page mobile <990px) CONFIRMED canonical after operator-triggered tri-AI debate (HQ Claude + second-opinion AI + evidence-research AI). Apple/Tesla/Hermès cart-toast premise that motivated re-opening the question was DEBUNKED: Apple uses Bag-page redirect (not toast); Tesla configurator is purchase-funnel-specific (not a comparable retail cart pattern); Hermès uses drawer+page hybrid (not toast). Brand argument flipped during debate: the cold-gallery aesthetic FAVORS drawer/cart-page pattern (preserves above-the-fold focus on product imagery; avoids modal-toast intrusion). Free-shipping progress bar parity locked: desktop drawer top + mobile cart page top. Single-point JS guard pattern locked: viewport detection lives in `CartDrawer.open()` method (defense-in-depth; satellite components inherit by calling the method instead of duplicating the check). |
+| Rationale | Operator-triggered AI-vs-AI debate on a previously-locked ADR is the established pattern for re-validating brand decisions against new evidence claims. The debate caught the Apple-toast premise as factual error (evidence research showed Apple Bag is page-redirect, not toast). Without the fact-check, ADR-08 might have been overturned on bad evidence. Pattern established: any future challenge to a locked ADR should trigger tri-AI debate with explicit evidence-research role. |
+| Evidence sources cited during debate | CRO Weekly A/B data (drawer vs page mobile conversion delta), Baymard behavioral research (mobile cart abandonment patterns), EcomHint decision framework (cart UX matrix by store category), NN/G overlay research (modal vs full-page conversion). |
+| Files Affected | `dawn/sections/cart-drawer.liquid`, `dawn/snippets/cart-notification.liquid`, `dawn/assets/cart.js` (single-point `CartDrawer.open()` guard added Task 066 commit `b8ce537`), `dawn/config/settings_data.json` (cart_type setting forced to "drawer"). |
+| Source | Task 066 pre-build challenge round transcript (HQ side; not on-disk). Confirms but does not replace ADR-08; ADR-08 remains primary, ADR-16 records the re-validation event. |
 
 ---
 
@@ -1541,7 +1554,7 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 
 ## 10. PHASE D PROGRESS DETAIL
 
-### 10.1 COMPLETED (12 logical tasks)
+### 10.1 COMPLETED (13 logical tasks)
 
 | # | Task | Executor | Commit SHA | Key decisions / learnings / gotchas |
 |---|---|---|---|---|
@@ -1559,8 +1572,9 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 | 053-fix | Replace middle-dot literal with HTML entity | Claude Code | `2aa3d9d` | Shopify CLI rejected `·` (U+00B7 bytes C2 B7) in trust-bar.liquid. Replaced with `&middot;` HTML entity. Section 9.5 mechanism discovery. |
 | 054 | Content Teaser custom section build | Claude Code | `8b83cca` | sections/content-teaser.liquid + assets/content-teaser.css + templates/index.json edit (insert content-teaser section after trust-bar). Two-column desktop (image 60% / text 40%) + stacked mobile. Schema: product picker, blog_post picker, excerpt textarea, optional heading override. CTA renders silver text-button `READ MORE →` linking to blog post; image links to product page. Padding 64px desktop / 48px mobile per Trust Bar precedent (desktop * 0.75). |
 | 054-fix | Layout fix + variable rename | Claude Code | `23a4360` | Two sub-fixes in one commit: (a) wrap image-column + text-column in `.content-teaser__row` so heading sits full-width above the two columns; (b) rename local Liquid variable `product` -> `featured_product` (Shopify reserved-name shadowing was causing Shopify CLI "illegal characters" sync error). See Section 16.1 Issue 7 for the variable-shadowing mechanism. |
+| 066 | Cart drawer mobile redirect (Dawn baseline modification) | Claude Code | `b8ce537` | Enforces ADR-08 cart pattern via two-layer defense: (a) `config/settings_data.json` cart_type setting forced to `drawer` (config layer); (b) `dawn/assets/cart.js` single-point viewport guard inside `CartDrawer.open()` method (JS layer). Satellite components (cart-notification trigger, ATC click handler) inherit the guard by calling `CartDrawer.open()` instead of duplicating viewport detection. Visual verification passed: desktop drawer opens at >=990px viewport; mobile redirects to `/cart` page at <990px. Free-shipping progress bar parity confirmed: desktop drawer top + mobile cart page top. Re-validates ADR-08 via tri-AI debate process (see new ADR-16 + Section 16.2 Resolved 8). |
 
-### 10.2 PENDING (17 logical Phase D tasks)
+### 10.2 PENDING (16 logical Phase D tasks)
 
 **Custom sections (8 remaining; Trust Bar Task 053 and Content Teaser Task 054 already done):**
 
@@ -1575,14 +1589,13 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 | 061 | Press Bar (Movement Page per Master Dispatcher Task 061) | Master Blueprint Part 2 Section 9.5 + movement_essays_NC.xlsx | STANDARD | Task 087 (movement collections) |
 | 062 | /links page | Master Blueprint Part 2 Section 9.6 + Performance section | STANDARD (custom page template; NOT a section) | None |
 
-**Dawn baseline modifications (5):**
+**Dawn baseline modifications (4 remaining; Cart Task 066 already done):**
 
 | # | Modification | Files affected | Blockers |
 |---|---|---|---|
-| 063 | Hero modify (replaces Dawn image_banner with right-aligned text + "THE ART YOU LIVE WITH") | `dawn/sections/image-banner.liquid` | None. Distinct from Task 054 Content Teaser (different homepage position; resolved per Section 16.3 verdict). |
-| 064 | Header mega menu with featured image | `dawn/sections/header.liquid`, `dawn/snippets/header-mega-menu.liquid` | None |
-| 065 | Product page (sticky gallery, accordions, app blocks) | `dawn/sections/main-product.liquid` | BLOCKED by Task 068 (metafields) |
-| 066 | Cart drawer desktop / page mobile | `dawn/sections/cart-drawer.liquid`, `dawn/assets/cart.js`, `dawn/templates/cart.json` | None |
+| 063 | Hero modify (replaces Dawn image_banner with right-aligned text + "THE ART YOU LIVE WITH") | `dawn/sections/image-banner.liquid` | Operator deferred (painting selection + WebP processing not yet complete). Spec-ready per recent pre-build audit. |
+| 064 | Header mega menu with featured image | `dawn/sections/header.liquid`, `dawn/snippets/header-mega-menu.liquid` | PARTIAL: split candidate per Section 14 audit. Task 064a (base header: logo + nav links + sticky behavior + mobile drawer) is POD-independent + spec-complete = next-immediate. Task 064b (mega menu content wiring: artist/movement link lists, featured image swap) BLOCKED by Shopify collections + metaobjects. |
+| 065 | Product page (sticky gallery, accordions, app blocks) | `dawn/sections/main-product.liquid` | BLOCKED by Task 068 (metafields) + POD product data |
 | 067 | Sticky ATC slide-up drawer (mobile product page) | `dawn/sections/main-product.liquid`, `dawn/assets/main-product.css` | Depends on Task 065 |
 
 **TU-manual (4):**
@@ -2064,23 +2077,28 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 ## 14. NEXT IMMEDIATE TASK
 
-**Task 055 - Artist Scroll custom section.**
+**Task 064a - Header base (split candidate).**
 
-- **Master Dispatcher line:** `| **055** | Build custom section: Artist Scroll | Claude Code | Section 9.1 | .liquid section | Theme sections/ |` (canonical; verify against `01_BLUEPRINT/Noctorya_Master_Task_Dispatcher.md` line ~142, NOT against prior Section 14 content - see Section 16.3 resolved verdict on derivation drift).
-- **Spec source:** Master Blueprint Part 2 Section 9.1 + page_specs_part1.md Section 7 ("Shop by Artist") + artist_metaobject_schema_definition.md (sub at `04_CONTENT/noctorya/shopify_imports/`).
-- **Position:** Homepage Section 7 (after Content Teaser, before Room Lifestyle).
-- **Pattern:** Horizontal scroll of artist cards using Dawn's `<slider-component>` web component. Square portraits, ALL-CAPS Inter artist names, painting-count caption. 5-6 visible desktop, 3 visible mobile with scroll-snap.
+- **Why this and not 055/057/063:** per the 2026-05-20 next-task discovery audit, Tasks 055/056/058 are BLOCKED + POD-dep (metaobjects + product data). Task 057 (Why Choose Us) is REFUSED by operator pending POD partner (21 comparison cells need fulfillment specs). Task 063 (Hero) is operator-deferred pending painting selection + WebP processing. Task 064 splits cleanly: base header (logo + nav links + sticky behavior + mobile drawer structure) is POD-independent + spec-complete; mega menu content (artist + movement link lists + featured image swap) is BLOCKED by Shopify collections + metaobjects. Building 064a now ships the brand-defining header across every page without contaminating the mega menu task.
+- **Master Dispatcher reference:** Task 064 is a single logical entry in the dispatcher (Dawn baseline modification: Header). The 064a/064b split is a Phase-D pragmatic decomposition recorded in SESSION_STATE Section 10.2 + this Section 14, NOT a dispatcher edit.
+- **Spec source:** Master Blueprint Part 2 Section 9.1 Section 2 + page_specs_part1.md Section 2 + Master Blueprint Part 2 Section 8.2 (Navigation Structure). Per Cowork audit Lateral Finding 1, also check `component_specs.md` Component 1 (Navigation - Desktop) + Component 2 (Navigation - Mobile) + Component 12 (Mega Menu) - because the header IS a cross-page reusable UI primitive (refinement of Lateral Finding 1: component_specs.md IS canonical for reusable primitives like cart drawer, accordion, breadcrumbs, navigation; NOT canonical for homepage section composition).
+- **Position:** Header (sticky on scroll, height 64px) visible on every page.
+- **Pattern (base header scope):** Logo (left) | nav links HOME SHOP REVIEWS ABOUT CONTACT (center) | icons Search Wishlist Cart (right). Mobile: Hamburger (left) | Logo (center) | icons (right). SHOP link placeholder for mega menu (064b later wires the hover trigger). Mobile drawer full-screen.
 - **Recommended audit sequence:**
-  1. HQ Claude generates Cowork prompt to dump Artist Scroll spec from research docs. **Cowork audit Lateral Finding 1 (Task 054 audit): SKIP `component_specs.md` for Tasks 055-062.** Reason: component_specs.md scopes itself to cross-page reusable UI atoms (Product Card, Mega Menu, Cart Drawer, Hero, etc.) and deliberately omits the 9 page-specific custom sections. Per-section specs live in page_specs_part1.md (homepage sections) + Master Blueprint Part 2 Section 9.x + content_requirements.md (canonical copy).
-  2. HQ identifies gaps in spec (Task 053 produced 7-10 gaps; Task 054 produced 15 + 3 cross-doc conflicts; Task 055 may have similar fan-out given metaobject dependency).
-  3. Operator confirms decisions or accepts HQ recommendations.
-  4. HQ generates Meta-Prompt v3 Task 055 prompt for CC.
-  5. CC executes (target commit chain: artist-scroll.liquid + artist-scroll.css + index.json update). Use explicit `git add` pathspec per Section 16.1 Issue 8.
-  6. Visual verification at localhost:9292 (shopify theme dev). Restart `shopify theme dev` between rapid iterations per Section 16.1 Issue 9.
+  1. HQ Claude generates Cowork prompt to dump Header spec. Read component_specs.md Components 1, 2, 12 (per refinement note above) PLUS Master Blueprint Part 2 Section 9.1 Section 2 PLUS page_specs_part1.md Section 2 PLUS Master Blueprint Part 2 Section 8.2.
+  2. HQ identifies gaps in spec. Expect medium gap count (header has more visual surface than Cart Drawer Task 066 but less data dependency than Content Teaser Task 054).
+  3. Operator confirms split scope: 064a = base header (this session); 064b = mega menu wiring (later session, blocked by collections).
+  4. HQ generates Meta-Prompt v3 Task 064a prompt for CC.
+  5. CC executes (target commit chain: header.liquid modifications + header.css modifications + JS for sticky-on-scroll behavior + mobile drawer). Use explicit `git add` pathspec per Section 16.1 Issue 8.
+  6. Visual verification at localhost:9292 (shopify theme dev). Restart per Section 16.1 Issue 9 between rapid iterations.
   7. Screenshot to HQ for visual approval.
-  8. Update SESSION_STATE.md via Cowork (this file; append Task 055 entry to Section 10.1; commit + push to origin/main).
-- **Expected complexity:** STANDARD-BLOCKED. The build itself is STANDARD (slider-component is Dawn built-in; cards are simple). But Task 055 is BLOCKED by Task 069 (Shopify admin Artist Metaobject creation); CC needs the metaobject definition to exist before the Liquid `metaobjects.artist` query resolves to non-empty data. Operator may proceed with a stub-data interim build (hardcoded sample artists in schema presets) and re-wire to metaobjects post-Task-069.
-- **Known blockers:** Task 069 Artist Metaobject definition (Shopify admin step; pending Shopify reactivation per Section 16.1 baseline state). Operator decision needed: stub-interim build now vs wait-for-069.
+  8. Update SESSION_STATE.md via Cowork (append Task 064a entry to Section 10.1; commit + push).
+- **Expected complexity:** STANDARD. Dawn header.liquid + header-drawer.liquid are well-structured; Noctorya-fy involves logo placement, nav typography (Inter ALL-CAPS letter-spaced), color scheme alignment (dark theme already propagated), sticky-on-scroll polish, mobile drawer cosmetic alignment.
+- **Known blockers for 064a:** none. SHOP link target (collection /collections/all-paintings) does not need to resolve to live data; URL pattern is future-stable.
+- **Deferred to 064b (do NOT build this session):** SHOP hover mega menu (3 columns By Artist + By Movement + Featured with hover-image-swap). Requires Shopify collections (artists + movements) + featured image data per artist/movement.
+
+**Other unblocked candidates flagged in 2026-05-20 audit (operator may pick instead of 064a):**
+- Task 062 /links page - PARTIAL (template buildable now, schema content-deferred). Requires operator decision on the content-deferred pattern (same precedent as Task 054 Content Teaser).
 
 ---
 
@@ -2124,6 +2142,10 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 10. **Customizer pickers reset after `shopify theme dev` restart.** Product, blog, and metaobject_reference pickers in section schema settings lose their values after a theme-dev restart. Plain-text settings (excerpt textarea, heading text, etc.) persist correctly. Operator must re-populate picker values manually post-restart during visual verification workflow. Affects QA tempo for sections that depend on picker-supplied data (Content Teaser, Artist Biography, Painting of the Week).
 
+11. **Mobile cart pattern requires drawer-setting enforcement at config level + JS guard at single open() entry point.** Defense-in-depth pattern proven during Task 066: setting `cart_type` to `drawer` in `config/settings_data.json` alone is INSUFFICIENT to enforce ADR-08 because satellite components (cart-notification trigger, ATC click handlers) may bypass the drawer pattern and trigger native browser behavior. Solution: single-point viewport guard inside `CartDrawer.open()` method in `dawn/assets/cart.js`; all satellite components inherit the guard by calling the method instead of duplicating viewport detection. Pattern generalizes: for any binary UX rule with multiple entry points, place the guard at the lowest-common-denominator method, not at each entry point. Reduces bypass surface from N entry points to 1.
+
+12. **Lateral Finding 1 refinement (component_specs.md canonical scope).** Original Task 054 finding said "component_specs.md does NOT contain page-specific custom sections; skip for Tasks 055-062". Task 066 audit refined this: **component_specs.md IS canonical for reusable UI primitives** (cart drawer Component 14, accordion Component 16, breadcrumbs Component 15, pills/variant-selectors Component 5, navigation Components 1+2, mega menu Component 12, footer Component 9, etc). It is NOT canonical for homepage section composition (Trust Bar, Content Teaser, Artist Scroll, Movement Grid, Why Choose Us, etc - those live in page_specs_part1.md). For future audits: SKIP component_specs.md for homepage section audits (Tasks 055-061); CHECK component_specs.md for component-level audits (Tasks 064 Header, 065 Product page accordions + pills, 067 Sticky ATC) where the relevant component is a reusable primitive.
+
 ### 16.2 Resolved during 2026-05-18 to 2026-05-19 sessions
 
 1. **FIX-1 Eleanor role clarification** (2026-05-19). 3 documentation files corrected (SESSION_HANDOFF_CONTEXT.md Section 1 + Section 3 sentence-length + decisions_log_full.md entry). Eleanor reframed as buyer persona; the Noctorya voice is the anonymous critic.
@@ -2139,6 +2161,8 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 6. **Task 054 illegal-characters debug arc** (Task 054-fix, commit 23a4360, 2026-05-20). Initial Content Teaser build (commit 8b83cca) used `{% assign product = section.settings.product %}` which collided with Shopify's reserved `product` global, producing repeated "contains illegal characters" sync errors and `.tmp.HASH` retry pile-up in shopify theme dev. Resolution: renamed the local Liquid variable to `featured_product`. Two operational learnings: (a) Shopify reserved-name shadowing pattern (Section 16.1 Issue 7); (b) Shopify CLI temp-file naming bug on Windows-mount paths with spaces (Section 16.1 Issue 9). Same commit also corrected the desktop layout by wrapping the image-column + text-column in `.content-teaser__row` so the heading renders full-width above the two columns instead of sharing the left column.
 
 7. **Task 054 vs Task 063 overlap resolved.** See Section 16.3 verdict moved to resolved here in this update. Section 14 derivation error that contaminated the next-task instruction also fixed in this update.
+
+8. **Task 066 cart pattern decision RE-VALIDATED** (2026-05-20). Operator triggered tri-AI debate (HQ Claude + second-opinion AI + evidence-research AI) on ADR-08 cart pattern after seeing claims about Apple/Tesla/Hermès cart-toast pattern. Debate process caught factual error: Apple does NOT use cart-toast; Apple Bag is page-redirect. Tesla configurator is purchase-funnel-specific (not retail cart). Hermès uses drawer+page hybrid. Brand argument flipped during debate: cold-gallery aesthetic FAVORS drawer/cart-page over toast (preserves above-the-fold focus on product imagery; avoids modal-toast intrusion). ADR-08 CONFIRMED canonical. ADR-16 added to Section 5 recording the re-validation event + the tri-AI debate pattern as the established methodology for re-opening locked ADRs against new evidence claims. Files affected: `dawn/sections/cart-drawer.liquid`, `dawn/snippets/cart-notification.liquid`, `dawn/assets/cart.js`, `dawn/config/settings_data.json`. Commit b8ce537.
 
 ### 16.3 Open question to surface with operator at next session
 
