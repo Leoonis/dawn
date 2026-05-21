@@ -14,8 +14,11 @@ class CartDrawer extends HTMLElement {
     cartLink.setAttribute('role', 'button');
     cartLink.setAttribute('aria-haspopup', 'dialog');
     cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
+      const isMobile = window.matchMedia('(max-width: 989px)').matches;
+      if (!isMobile) {
+        event.preventDefault();
+        this.open(cartLink);
+      }
     });
     cartLink.addEventListener('keydown', (event) => {
       if (event.code.toUpperCase() === 'SPACE') {
@@ -26,6 +29,10 @@ class CartDrawer extends HTMLElement {
   }
 
   open(triggeredBy) {
+    if (window.matchMedia('(max-width: 989px)').matches) {
+      window.location.assign('/cart');
+      return;
+    }
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
