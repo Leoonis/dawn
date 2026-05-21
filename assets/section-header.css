@@ -1,0 +1,52 @@
+/* ===========================================================
+   NOCTORYA - Header Base (Task 064a)
+   ----------------------------------------------------------
+   Section: header (sections/header.liquid)
+   Layer: Noctorya overrides on Dawn baseline.
+   Loaded in layout/theme.liquid AFTER base.css + brand-tokens.css.
+   Tokens consumed: --color-border-subtle,
+                    --color-text-secondary,
+                    --color-text-primary
+   =========================================================== */
+
+/* Heights - override Dawn's padding-driven sizing */
+.section-header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 990px) {
+  .section-header {
+    height: 64px;
+  }
+}
+
+/* Border-bottom token enforcement (override Dawn's rgba alpha approximation) */
+.header-wrapper--border-bottom {
+  border-bottom-color: var(--color-border-subtle);
+}
+
+/* Nav link colors - override Dawn --color-link inheritance with spec tokens */
+.header__menu-item.link--text {
+  color: var(--color-text-secondary);
+  transition: color 0.2s ease;
+}
+
+.header__menu-item.link--text:hover {
+  color: var(--color-text-primary);
+}
+
+.header__active-menu-item {
+  color: var(--color-text-primary);
+}
+
+/* Account icon - defense-in-depth hide (schema also disables enable_customer_avatar) */
+.header__icon--account {
+  display: none;
+}
+
+/* Hero positioning support: header is opaque + sticky, occupies first
+   64px desktop / 56px mobile. Hero (Task 063) starts immediately below,
+   using calc(100vh - 64px) desktop and calc(100svh - 56px) mobile.
+   Header NEVER overlays painting content. */
