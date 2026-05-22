@@ -1,6 +1,6 @@
 # NOCTORYA - SESSION STATE
 
-**Last updated:** 2026-05-20 post-Task-066 Europe/Bucharest by Cowork
+**Last updated:** 2026-05-22 post-Task-064a complete Europe/Bucharest by Cowork
 **Audience:** HQ Claude (web-based) reading at session start. Dense, exhaustive, NOT executive summary.
 **Read this FIRST at every new HQ Claude session.** This is the canonical context document.
 
@@ -82,18 +82,24 @@
 
 ---
 
-## 4. CURRENT STATE (as of 2026-05-20 post-Task-066 Europe/Bucharest)
+## 4. CURRENT STATE (as of 2026-05-22 post-Task-064a complete Europe/Bucharest)
 
 **Git state (verified on disk via `git -C dawn log --oneline -15`):**
 
-- HEAD SHA (local main and origin/main): `b8ce537fa301f63968c155d61946d5c20a815add`
+- HEAD SHA (local main and origin/main): `cd064e4fc73c857cc03f9fbfc45b1b85ce4b445e`
 - Active branch: `main` (also has `live/noctorya` branch, both local and remote)
 - Working tree: 313 files showing as modified (CRLF/LF drift from original Dawn checkout; benign per ADR established earlier; NOT real content drift). ALWAYS use explicit `git add <pathspec>` to avoid inflating commit scope with this drift; see Section 16.1 Issue 8.
-- Commits ahead of upstream Dawn: 15
+- Commits ahead of upstream Dawn: 20
 
 **Commit log (last 15 commits, newest first):**
 
 ```
+cd064e4 Task 064a hotfix final: flex-child width fix on .header-wrapper (root cause: sticky-header flex-grow:0 in flex parent prevented viewport-wide extent)
+a6b53b8 Task 064a hotfix correction: wrap --color-background token in rgb() for valid CSS
+343ae10 Task 064a hotfix: header background extends viewport (fix max-width cutoff shelf at right edge)
+5930e5c Task 064a fix: header-group.json settings + CSS account icon specificity (live theme state correction)
+132a0ba Task 064a: header base (sticky always + mega menu schema + nav typography + opaque header + predictive search disabled + section-header.css new)
+f1ee9e2 SESSION_STATE: post-Task-066 update (HEAD b8ce537; 13/29 Phase D; 2 new known issues; cart pattern ADR added)
 b8ce537 Task 066: cart drawer mobile redirect (cart_type=drawer + single-point viewport guard)
 ed25ad7 SESSION_STATE: post-Task-054 update (HEAD 23a4360; 12/29 Phase D; 4 new known issues; Section 14 fix)
 23a4360 Task 054 fix: wrap image+text in __row, heading full-width above (desktop layout fix)
@@ -103,20 +109,14 @@ ed25ad7 SESSION_STATE: post-Task-054 update (HEAD 23a4360; 12/29 Phase D; 4 new 
 9afd1a1 Task 053: build Trust Bar custom section (4 badges, inline SVG icons)
 4f2a7eb Task 052: render custom-fonts snippet + append Noctorya global base styles to base.css
 7dbd4af Task 051 Phase 5: Noctorya-fy scheme-1 admin colors + force remaining scheme refs to scheme-1
-87cd6c6 Task 051 Phase 3: force all section color_scheme refs to scheme-1 (Single Dark Uniform)
-08072fc Task 051: load brand-tokens.css after base.css in theme.liquid (scheme-1 colors + font tokens)
-1d755b3 Task 050: install brand-tokens.css design system to dawn/assets/
-1cfc3df Task 049: create snippets/custom-fonts.liquid (@font-face + 2 preloads)
-6762ea4 Task 048: install self-hosted WOFF2 fonts (Bodoni Moda 400+500, Inter 400+500+600) to dawn/assets/
-73f3987 Task 046: install dawn/CLAUDE.md, dawn/.cursorrules, and gitignore .claude/
 ```
 
 **Phase D progress:**
-- 13 of 29 logical Phase D tasks complete (44.8%)
+- 14 of 29 logical Phase D tasks complete (48.3%)
 - Foundation Layer: DONE (Tasks 043-052: Node, fork, branches, rules files, fonts, brand-tokens, scheme propagation, custom-fonts snippet, base.css globals)
 - Custom sections built: 2 of 9 (trust-bar, content-teaser)
-- Dawn baseline modifications built: 1 of 5 (cart drawer mobile redirect)
-- Next immediate task: 064a Header base (split candidate per Lateral Finding 1; POD-independent + spec-complete)
+- Dawn baseline modifications built: 2 of 5 (cart drawer Task 066, header base Task 064a)
+- Next immediate task: 062 /links page (brand-driven, no paintings dep, leverages 130K+ social audience)
 
 ---
 
@@ -301,6 +301,29 @@ ADRs reconstructed from HQ_REBRIEF_PHASE_D.md (already on disk at project root, 
 | Evidence sources cited during debate | CRO Weekly A/B data (drawer vs page mobile conversion delta), Baymard behavioral research (mobile cart abandonment patterns), EcomHint decision framework (cart UX matrix by store category), NN/G overlay research (modal vs full-page conversion). |
 | Files Affected | `dawn/sections/cart-drawer.liquid`, `dawn/snippets/cart-notification.liquid`, `dawn/assets/cart.js` (single-point `CartDrawer.open()` guard added Task 066 commit `b8ce537`), `dawn/config/settings_data.json` (cart_type setting forced to "drawer"). |
 | Source | Task 066 pre-build challenge round transcript (HQ side; not on-disk). Confirms but does not replace ADR-08; ADR-08 remains primary, ADR-16 records the re-validation event. |
+
+### ADR-17: Header sticky behavior = ALWAYS (re-validated via tri-AI debate)
+
+| Field | Content |
+|---|---|
+| ID | ADR-17 |
+| Date | 2026-05-22 (Task 064a pre-build challenge round) |
+| Decision | Header sticky behavior set to `always` (header remains visible across all scroll states on both desktop and mobile). NOT scroll-up-only (Polène/Hermès pattern misattribution caught during debate), NOT static (Apple pattern), NOT show-on-scroll-up-hide-on-scroll-down (Linear pattern). |
+| Rationale | Operator triggered tri-AI debate (HQ + second-opinion + evidence-research) on header sticky behavior after seeing claims that scroll-up-only is "more premium". Evidence: (a) gallery e-commerce convention (Saatchi, Artsy, MoMA Design Store, Hauser & Wirth, David Zwirner) uses sticky=always; (b) brand argument flipped: cold-gallery aesthetic FAVORS always-visible header because header IS the wayfinding anchor for a curated-catalog deep-browse experience (nav must survive deep scrolls into artist + movement collection pages); (c) viewport footprint analysis: 64px header on 100vh = 7.1% desktop / 8.6% mobile = negligible content occlusion. Polène + Hermès convention re-verified: both use sticky=always, not scroll-up-only. |
+| Files Affected | `dawn/sections/header.liquid` (sticky_type schema setting + presets), `dawn/sections/header-group.json` (runtime state: sticky_type=always; canonical state per Issue 13 lesson), `dawn/assets/section-header.css` (sticky positioning rules). |
+| Evidence sources cited during debate | Gallery e-commerce header pattern survey (Saatchi, Artsy, MoMA Design Store, Hauser & Wirth, David Zwirner); viewport-footprint math; Polène + Hermès convention re-verification. |
+| Source | Task 064a pre-build challenge round transcript (HQ side; not on-disk). Established pattern per ADR-16 methodology: tri-AI debate to re-validate decisions challenged on new evidence claims. |
+
+### ADR-18: Flex-child width pattern for Shopify custom-element wrappers (visual color bugs can be sizing bugs)
+
+| Field | Content |
+|---|---|
+| ID | ADR-18 |
+| Date | 2026-05-22 (Task 064a hotfix journey, commit cd064e4) |
+| Decision | When a Shopify custom element (Web Component like `<sticky-header>`) is placed inside a flex parent with `display:flex` direction:column, the custom element defaults to `flex-grow:0` and does NOT extend to parent width. Wrapper class (e.g., `.header-wrapper`) must be given explicit `flex: 1; width: 100%;` to occupy full parent width. This is the canonical pattern for ALL Dawn custom-element wrappers inside flex layouts (sticky-header, sticky-cart, sticky-banner, predictive-search-modal, etc.). |
+| Rationale | Task 064a hotfix journey isolated the real root cause through 3 attempts over 3 commits: (1) commit 343ae10 attempted background-color fix with invalid `var(--color-background)` syntax — INTRODUCED REGRESSION making header transparent (invalid var() resolves to CSS initial value, NOT prior cascade; mechanism in Issue 16); (2) commit a6b53b8 wrapped token in `rgb()` for valid CSS — restored opacity but the original "shelf at right edge" symptom persisted; (3) commit cd064e4 isolated via DevTools console scripts (`document.querySelector(".header-wrapper").getBoundingClientRect()`) that wrapper width was 1208px in a 1280px viewport — the bug was layout SIZING, not color. Replacing all bg rules with `flex: 1; width: 100%;` on `.header-wrapper` fixed the real issue. **Lesson generalizes:** "visual color bugs" with edge symptoms (shelves, gaps, partial backgrounds, transparent fills) can be SIZING/LAYOUT bugs in disguise; DevTools console scripts (`getBoundingClientRect()`, `getComputedStyle()`) >> screenshots for layout diagnostics. |
+| Files Affected | `dawn/assets/section-header.css` (`.header-wrapper { flex: 1; width: 100%; }` rule). Applies to any future Shopify custom-element wrappers in Dawn. |
+| Source | Task 064a hotfix journey 343ae10 -> a6b53b8 -> cd064e4 (3 commits, 5 files modified across the journey). Visual verification at localhost:9292 console-script DOM measurement confirmed wrapper width = viewport width post-fix. |
 
 ---
 
@@ -1554,7 +1577,7 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 
 ## 10. PHASE D PROGRESS DETAIL
 
-### 10.1 COMPLETED (13 logical tasks)
+### 10.1 COMPLETED (14 logical tasks)
 
 | # | Task | Executor | Commit SHA | Key decisions / learnings / gotchas |
 |---|---|---|---|---|
@@ -1573,8 +1596,9 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 | 054 | Content Teaser custom section build | Claude Code | `8b83cca` | sections/content-teaser.liquid + assets/content-teaser.css + templates/index.json edit (insert content-teaser section after trust-bar). Two-column desktop (image 60% / text 40%) + stacked mobile. Schema: product picker, blog_post picker, excerpt textarea, optional heading override. CTA renders silver text-button `READ MORE →` linking to blog post; image links to product page. Padding 64px desktop / 48px mobile per Trust Bar precedent (desktop * 0.75). |
 | 054-fix | Layout fix + variable rename | Claude Code | `23a4360` | Two sub-fixes in one commit: (a) wrap image-column + text-column in `.content-teaser__row` so heading sits full-width above the two columns; (b) rename local Liquid variable `product` -> `featured_product` (Shopify reserved-name shadowing was causing Shopify CLI "illegal characters" sync error). See Section 16.1 Issue 7 for the variable-shadowing mechanism. |
 | 066 | Cart drawer mobile redirect (Dawn baseline modification) | Claude Code | `b8ce537` | Enforces ADR-08 cart pattern via two-layer defense: (a) `config/settings_data.json` cart_type setting forced to `drawer` (config layer); (b) `dawn/assets/cart.js` single-point viewport guard inside `CartDrawer.open()` method (JS layer). Satellite components (cart-notification trigger, ATC click handler) inherit the guard by calling `CartDrawer.open()` instead of duplicating viewport detection. Visual verification passed: desktop drawer opens at >=990px viewport; mobile redirects to `/cart` page at <990px. Free-shipping progress bar parity confirmed: desktop drawer top + mobile cart page top. Re-validates ADR-08 via tri-AI debate process (see new ADR-16 + Section 16.2 Resolved 8). |
+| 064a | Header base (Dawn baseline modification; split from Task 064) | Claude Code | 5 commits: `132a0ba` build + `5930e5c` fix-pass + `343ae10` hotfix attempt 1 (REGRESSION) + `a6b53b8` hotfix correction + `cd064e4` hotfix FINAL (real root cause) | **Build (`132a0ba`):** schema sticky_type default=always per new ADR-17 + mega menu schema scaffolded for 064c + nav typography (Inter ALL-CAPS letter-spaced) + opaque header rule + predictive_search disabled in settings_data.json + new section-header.css registered in theme.liquid. 4 files, 65 lines. **Fix-pass (`5930e5c`):** header-group.json runtime state correction (sticky_type=always written to live state per Issue 13 lesson: schema defaults do NOT propagate to existing installed themes) + CSS specificity chain for account icon visibility against Dawn :not() compound selectors (per Issue 14). 2 files, 11 lines. **Hotfix journey (`343ae10` -> `a6b53b8` -> `cd064e4`):** 3 attempts to fix "shelf at right edge" symptom. Attempt 1 (`343ae10`) added bg rules with invalid `var(--color-background)` syntax -> REGRESSION (transparent header; invalid var() resolves to initial value NOT prior cascade per Issue 16). Attempt 2 (`a6b53b8`) wrapped token in `rgb()` for valid CSS -> opaque restored but shelf persisted. Attempt 3 (`cd064e4`) FINAL: DevTools console isolation revealed real root cause = `<sticky-header>` Web Component flex-grow:0 in flex parent display:column prevented viewport-wide extent. Fixed via `.header-wrapper { flex: 1; width: 100%; }` (see new ADR-18). Visual verification PASSED post `cd064e4`: console-script DOM measurement confirmed wrapper width = viewport width edge-to-edge desktop maximized + mobile 375px. **Split status:** 064a DONE; 064b (announcement bar + cart icon styling) deferred; 064c (mega menu featured-image swap) deferred (paintings dep). |
 
-### 10.2 PENDING (16 logical Phase D tasks)
+### 10.2 PENDING (15 logical Phase D tasks)
 
 **Custom sections (8 remaining; Trust Bar Task 053 and Content Teaser Task 054 already done):**
 
@@ -1589,12 +1613,13 @@ When editing Dawn baseline files, preserve the existing indentation style at the
 | 061 | Press Bar (Movement Page per Master Dispatcher Task 061) | Master Blueprint Part 2 Section 9.5 + movement_essays_NC.xlsx | STANDARD | Task 087 (movement collections) |
 | 062 | /links page | Master Blueprint Part 2 Section 9.6 + Performance section | STANDARD (custom page template; NOT a section) | None |
 
-**Dawn baseline modifications (4 remaining; Cart Task 066 already done):**
+**Dawn baseline modifications (3 remaining; Cart Task 066 + Header base Task 064a already done):**
 
 | # | Modification | Files affected | Blockers |
 |---|---|---|---|
 | 063 | Hero modify (replaces Dawn image_banner with right-aligned text + "THE ART YOU LIVE WITH") | `dawn/sections/image-banner.liquid` | Operator deferred (painting selection + WebP processing not yet complete). Spec-ready per recent pre-build audit. |
-| 064 | Header mega menu with featured image | `dawn/sections/header.liquid`, `dawn/snippets/header-mega-menu.liquid` | PARTIAL: split candidate per Section 14 audit. Task 064a (base header: logo + nav links + sticky behavior + mobile drawer) is POD-independent + spec-complete = next-immediate. Task 064b (mega menu content wiring: artist/movement link lists, featured image swap) BLOCKED by Shopify collections + metaobjects. |
+| 064b | Header announcement bar + cart icon styling (split from Task 064) | `dawn/sections/announcement-bar.liquid`, `dawn/sections/header.liquid` (cart icon section), `dawn/assets/section-header.css` | Deferred per operator split decision; dep on Task 067 sticky ATC mobile interaction (cart icon visual states must align with sticky-ATC mobile placement before final lock). |
+| 064c | Header mega menu featured-image swap (split from Task 064) | `dawn/sections/header.liquid`, `dawn/snippets/header-mega-menu.liquid`, `dawn/assets/section-header.css` | Deferred: paintings + artist/movement metaobjects + collections dependency. Mega menu schema scaffolded in Task 064a (commit `132a0ba`); content wiring requires Shopify reactivation + admin data. |
 | 065 | Product page (sticky gallery, accordions, app blocks) | `dawn/sections/main-product.liquid` | BLOCKED by Task 068 (metafields) + POD product data |
 | 067 | Sticky ATC slide-up drawer (mobile product page) | `dawn/sections/main-product.liquid`, `dawn/assets/main-product.css` | Depends on Task 065 |
 
@@ -2077,28 +2102,36 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 ## 14. NEXT IMMEDIATE TASK
 
-**Task 064a - Header base (split candidate).**
+**Task 062 - /links page (custom page template for IG/TikTok bio link).**
 
-- **Why this and not 055/057/063:** per the 2026-05-20 next-task discovery audit, Tasks 055/056/058 are BLOCKED + POD-dep (metaobjects + product data). Task 057 (Why Choose Us) is REFUSED by operator pending POD partner (21 comparison cells need fulfillment specs). Task 063 (Hero) is operator-deferred pending painting selection + WebP processing. Task 064 splits cleanly: base header (logo + nav links + sticky behavior + mobile drawer structure) is POD-independent + spec-complete; mega menu content (artist + movement link lists + featured image swap) is BLOCKED by Shopify collections + metaobjects. Building 064a now ships the brand-defining header across every page without contaminating the mega menu task.
-- **Master Dispatcher reference:** Task 064 is a single logical entry in the dispatcher (Dawn baseline modification: Header). The 064a/064b split is a Phase-D pragmatic decomposition recorded in SESSION_STATE Section 10.2 + this Section 14, NOT a dispatcher edit.
-- **Spec source:** Master Blueprint Part 2 Section 9.1 Section 2 + page_specs_part1.md Section 2 + Master Blueprint Part 2 Section 8.2 (Navigation Structure). Per Cowork audit Lateral Finding 1, also check `component_specs.md` Component 1 (Navigation - Desktop) + Component 2 (Navigation - Mobile) + Component 12 (Mega Menu) - because the header IS a cross-page reusable UI primitive (refinement of Lateral Finding 1: component_specs.md IS canonical for reusable primitives like cart drawer, accordion, breadcrumbs, navigation; NOT canonical for homepage section composition).
-- **Position:** Header (sticky on scroll, height 64px) visible on every page.
-- **Pattern (base header scope):** Logo (left) | nav links HOME SHOP REVIEWS ABOUT CONTACT (center) | icons Search Wishlist Cart (right). Mobile: Hamburger (left) | Logo (center) | icons (right). SHOP link placeholder for mega menu (064b later wires the hover trigger). Mobile drawer full-screen.
+- **Why this and not 058 Best Sellers or other custom sections:** Task 058 (Best Sellers / Featured Collection) has product-data dependency (empty grid is half-measure). Tasks 055/056/060/061 BLOCKED by metaobjects + collections (Shopify reactivation). Task 057 REFUSED pending POD partner. Task 063 operator-deferred pending painting + WebP. Task 062 is brand-driven (page template + featured-content links), POD-independent (template ships now, schema content fills via Customizer when products land - same precedent as Content Teaser Task 054), and HIGH-LEVERAGE (first touchpoint for 80%+ of social traffic; Noctorya has 130K+ followers across @noctorya IG 95K + @noctorya TikTok 37K; the /links page is THE primary destination when followers tap the bio link).
+- **Master Dispatcher reference:** Task 062 area, listed as custom page template (NOT a homepage section). Master Blueprint Part 2 Section 9.6 + page_specs_part2.md lines 103-159 are the canonical sources.
+- **Spec source:** `08_DEEP_RESEARCH/folder3_design/page_specs_part2.md` lines 103-159 (one of the most-detailed page specs in the corpus) + Master Blueprint Part 2 Section 9.6 + Cart Drawer Component 14 sub-reference for cart icon if reused.
+- **Position:** Custom page template at `/links` URL. NOT a homepage section. Standalone page.
+- **Performance critical:** Target <2s LCP on 3G mobile per page_specs_part2.md line 110. System fonts ONLY (no WOFF2), inline CSS in `<style>` tag (no external stylesheet), no Clarity/GA on this page (or defer 5s+), single painting image = LCP element, preloaded WebP max 60KB, max-width 480px centered.
+- **Pattern (per page_specs_part2.md):**
+  - Simplified nav: text-only logo (Didot/Bodoni MT system font) + Shop link + Cart icon. NO hamburger, NO mega menu.
+  - Featured Painting: WebP image, painting title + artist + year below, [SHOP THIS PAINTING] white button (primary CTA, links to /products/[painting]).
+  - 3 link buttons (white outline, full-width, 48px height): WATCH LATEST VIDEO, SHOP ALL PAINTINGS, ABOUT US.
+  - Social icons row: Instagram, TikTok, YouTube, Facebook, Pinterest (24px white, external links).
+  - Schema settings: product picker, video_url, shop_url, about_url.
+  - noindex meta tag (page not crawled).
 - **Recommended audit sequence:**
-  1. HQ Claude generates Cowork prompt to dump Header spec. Read component_specs.md Components 1, 2, 12 (per refinement note above) PLUS Master Blueprint Part 2 Section 9.1 Section 2 PLUS page_specs_part1.md Section 2 PLUS Master Blueprint Part 2 Section 8.2.
-  2. HQ identifies gaps in spec. Expect medium gap count (header has more visual surface than Cart Drawer Task 066 but less data dependency than Content Teaser Task 054).
-  3. Operator confirms split scope: 064a = base header (this session); 064b = mega menu wiring (later session, blocked by collections).
-  4. HQ generates Meta-Prompt v3 Task 064a prompt for CC.
-  5. CC executes (target commit chain: header.liquid modifications + header.css modifications + JS for sticky-on-scroll behavior + mobile drawer). Use explicit `git add` pathspec per Section 16.1 Issue 8.
-  6. Visual verification at localhost:9292 (shopify theme dev). Restart per Section 16.1 Issue 9 between rapid iterations.
-  7. Screenshot to HQ for visual approval.
-  8. Update SESSION_STATE.md via Cowork (append Task 064a entry to Section 10.1; commit + push).
-- **Expected complexity:** STANDARD. Dawn header.liquid + header-drawer.liquid are well-structured; Noctorya-fy involves logo placement, nav typography (Inter ALL-CAPS letter-spaced), color scheme alignment (dark theme already propagated), sticky-on-scroll polish, mobile drawer cosmetic alignment.
-- **Known blockers for 064a:** none. SHOP link target (collection /collections/all-paintings) does not need to resolve to live data; URL pattern is future-stable.
-- **Deferred to 064b (do NOT build this session):** SHOP hover mega menu (3 columns By Artist + By Movement + Featured with hover-image-swap). Requires Shopify collections (artists + movements) + featured image data per artist/movement.
+  1. HQ Claude generates Cowork prompt to dump /links spec from page_specs_part2.md lines 103-159 + Master Blueprint Part 2 Section 9.6.
+  2. HQ identifies gaps in spec (expect small gap count - one of the most-detailed page specs).
+  3. Operator confirms content-deferred pattern acceptance (Customizer pickers populate when products land; precedent: Content Teaser Task 054 approved).
+  4. HQ generates Meta-Prompt v3 Task 062 prompt for CC.
+  5. CC executes (target commit chain: `templates/page.links.json` custom page template + `sections/main-links.liquid` minimal section + INLINE CSS in section file per <2s-LCP performance budget). Use explicit `git add` pathspec per Section 16.1 Issue 8. Apply EOL-detection pattern from Issue 15 for any Dawn-baseline file edited.
+  6. Visual verification at localhost:9292 (mobile 375px primary; desktop just confirms graceful 480px max-width centering).
+  7. Lighthouse audit on /links targeting LCP <2s on 3G throttle.
+  8. Screenshot + DevTools console measurement to HQ for visual approval (per ADR-18 lesson: console scripts > screenshots for layout diagnostics).
+  9. Update SESSION_STATE.md via Cowork (append Task 062 entry to Section 10.1; commit + push).
+- **Expected complexity:** STANDARD. Custom page template + minimal inline-CSS section + schema with 4 pickers. Tight performance budget is the main constraint.
+- **Known blockers:** none. Featured painting placeholder works with any source painting from `02_PAINTINGS/source_highres/` until POD catalog lands.
+- **Operator decision needed before build:** confirm content-deferred pattern (template ships with placeholder picker values; operator populates real product + video URL via Customizer post-build).
 
-**Other unblocked candidates flagged in 2026-05-20 audit (operator may pick instead of 064a):**
-- Task 062 /links page - PARTIAL (template buildable now, schema content-deferred). Requires operator decision on the content-deferred pattern (same precedent as Task 054 Content Teaser).
+**Alternative candidate flagged in prior audits:**
+- Task 058 Best Sellers / Featured Collection - Dawn 🟢 built-in section configuration. Could be configured now with placeholder collection, but rendering is empty until products land. Lower max-potential than 062.
 
 ---
 
@@ -2146,6 +2179,14 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 
 12. **Lateral Finding 1 refinement (component_specs.md canonical scope).** Original Task 054 finding said "component_specs.md does NOT contain page-specific custom sections; skip for Tasks 055-062". Task 066 audit refined this: **component_specs.md IS canonical for reusable UI primitives** (cart drawer Component 14, accordion Component 16, breadcrumbs Component 15, pills/variant-selectors Component 5, navigation Components 1+2, mega menu Component 12, footer Component 9, etc). It is NOT canonical for homepage section composition (Trust Bar, Content Teaser, Artist Scroll, Movement Grid, Why Choose Us, etc - those live in page_specs_part1.md). For future audits: SKIP component_specs.md for homepage section audits (Tasks 055-061); CHECK component_specs.md for component-level audits (Tasks 064 Header, 065 Product page accordions + pills, 067 Sticky ATC) where the relevant component is a reusable primitive.
 
+13. **Shopify schema defaults do NOT propagate to existing installed themes.** A schema change to `sections/<name>.liquid` setting defaults only affects NEW installs of the section; the live theme's section-group JSON file (e.g. `sections/header-group.json` for header) holds the canonical runtime state for already-installed sections. Discovered during Task 064a build (commit `132a0ba` updated header.liquid schema sticky_type default=always; live theme still rendered sticky_type=on-scroll-up because header-group.json had stored the old runtime value). Fix: commit `5930e5c` wrote the new value directly to header-group.json runtime state. Pattern generalizes: any schema-default change that must affect an existing installed theme MUST also update the corresponding section-group JSON runtime state. Affects future tasks editing announcement-bar schemas, footer-group schemas, header schemas, or any section-group-managed section.
+
+14. **CSS specificity battle: Dawn `:not()` compound selectors require class chaining to override.** Discovered during Task 064a fix-pass (commit `5930e5c`). Dawn base.css uses high-specificity compound selectors like `header.shopify-section:not(.shopify-section-group-header-group) > nav .header__icon:not(.header__icon--account)` to scope icon visibility. Single-class overrides (e.g., `.header__icon { display: block; }`) lose the specificity battle and have no effect. Workaround: chain matching classes in the override selector to equal or exceed Dawn's specificity, OR target the specific compound (e.g., `.header__icon--account` plus parent class chain). Verify via DevTools "Computed Styles" panel which rule actually wins. Affects any future task overriding Dawn icon visibility, nav-link states, or component-state CSS.
+
+15. **Python in-place edits on Windows-mount must detect line endings before writing.** SESSION_STATE.md is LF-only (Cowork writes from Linux bindfs mount). Dawn baseline files (theme.liquid, *.liquid, *.json) are CRLF (Windows-side Shopify convention). Python `pathlib.Path.write_text()` and `open(mode="w")` use the OS default line separator (LF on Linux mount), which silently converts CRLF source files to LF on write-back, breaking byte-identity with origin-repo state. Auto-detect pattern: read as bytes via `read_bytes()`, count `b"\r\n"` vs `b"\n"`, assert mode (LF/CRLF/MIXED), preserve mode on write back via binary I/O (`Path.write_bytes()`). Cowork pattern for SESSION_STATE.md is LF-only (file is sandbox-authored); for any future task editing Dawn baseline files, MUST detect-and-preserve EOL or use shopify theme dev sync which handles EOL transparently.
+
+16. **CSS `var(--token)` requires `rgb()` wrap when token is a bare RGB triplet (Dawn convention).** Dawn defines color tokens as comma-separated RGB triplets (e.g., `--color-background: 17, 17, 17;`) and references them via `rgba(var(--color-background), 1)` or `rgb(var(--color-background))`. Bare `var(--color-background)` in a CSS property expecting a color value resolves to the invalid string `"17, 17, 17"` which fails CSS parsing AND resolves to the property INITIAL VALUE (not the prior cascade), producing transparent backgrounds, default colors, etc. Symptoms can masquerade as cascade issues. Always wrap Dawn RGB triplets: `background-color: rgb(var(--color-background));` or `rgba(var(--color-background), 0.88);`. Discovered during Task 064a hotfix attempt 1 (commit `343ae10` - INTRODUCED REGRESSION); fixed in `a6b53b8`. Related Web Component gotcha discovered same commit chain (now ADR-18): Shopify custom elements like `<sticky-header>` default to `flex-grow:0` inside flex parents and do NOT extend to parent width; explicit `flex: 1; width: 100%;` on the wrapper class is required. **Lesson generalizes:** "visual color bugs" with edge symptoms (shelves, gaps, partial backgrounds, transparent fills) can be SIZING/LAYOUT bugs in disguise; **DevTools console scripts (`getBoundingClientRect()`, `getComputedStyle()`) are higher-signal than screenshots for layout diagnostics.**
+
 ### 16.2 Resolved during 2026-05-18 to 2026-05-19 sessions
 
 1. **FIX-1 Eleanor role clarification** (2026-05-19). 3 documentation files corrected (SESSION_HANDOFF_CONTEXT.md Section 1 + Section 3 sentence-length + decisions_log_full.md entry). Eleanor reframed as buyer persona; the Noctorya voice is the anonymous critic.
@@ -2163,6 +2204,10 @@ Complete inventory of reference material in `01_BLUEPRINT/` and `08_DEEP_RESEARC
 7. **Task 054 vs Task 063 overlap resolved.** See Section 16.3 verdict moved to resolved here in this update. Section 14 derivation error that contaminated the next-task instruction also fixed in this update.
 
 8. **Task 066 cart pattern decision RE-VALIDATED** (2026-05-20). Operator triggered tri-AI debate (HQ Claude + second-opinion AI + evidence-research AI) on ADR-08 cart pattern after seeing claims about Apple/Tesla/Hermès cart-toast pattern. Debate process caught factual error: Apple does NOT use cart-toast; Apple Bag is page-redirect. Tesla configurator is purchase-funnel-specific (not retail cart). Hermès uses drawer+page hybrid. Brand argument flipped during debate: cold-gallery aesthetic FAVORS drawer/cart-page over toast (preserves above-the-fold focus on product imagery; avoids modal-toast intrusion). ADR-08 CONFIRMED canonical. ADR-16 added to Section 5 recording the re-validation event + the tri-AI debate pattern as the established methodology for re-opening locked ADRs against new evidence claims. Files affected: `dawn/sections/cart-drawer.liquid`, `dawn/snippets/cart-notification.liquid`, `dawn/assets/cart.js`, `dawn/config/settings_data.json`. Commit b8ce537.
+
+9. **Task 064a Header base build + fix-pass + 3-attempt hotfix journey COMPLETE** (2026-05-22). Full 5-commit sequence: `132a0ba` build (schema defaults + new section-header.css + theme.liquid CSS registration + settings_data.json predictive_search disabled; 4 files, 65 lines) -> `5930e5c` fix-pass (header-group.json runtime state correction per new Issue 13 + CSS specificity chain for account icon per new Issue 14; 2 files, 11 lines) -> `343ae10` hotfix attempt 1 (added bg rules with invalid `var(--color-background)` syntax - **INTRODUCED REGRESSION making header transparent**, mechanism documented in new Issue 16) -> `a6b53b8` hotfix correction (wrapped token in `rgb()` for valid CSS - opaque restored but "shelf at right edge" symptom persisted) -> `cd064e4` hotfix FINAL (DevTools console isolation revealed REAL ROOT CAUSE: `<sticky-header>` Web Component flex-grow:0 in flex parent display:column prevented wrapper from extending to viewport width; fixed via `.header-wrapper { flex: 1; width: 100%; }` per new ADR-18). Visual verification PASSED post `cd064e4`: console-script measurement confirmed wrapper width = viewport width edge-to-edge desktop maximized + mobile 375px. **Key lesson:** visual bugs that "look like color issues" (shelf at edge, transparent background, partial fill) can be LAYOUT SIZING bugs in disguise; verify with DevTools console scripts (`getBoundingClientRect()`, `getComputedStyle()`) BEFORE guessing CSS color fixes. 5 commits, ~80 lines modified total across 5 files. Split status: 064a DONE; 064b (announcement bar + cart icon styling) deferred; 064c (mega menu featured-image swap, paintings dep) deferred.
+
+10. **ADR-17 Header sticky=always RE-VALIDATED via tri-AI follow-up debate** (2026-05-22). Operator triggered tri-AI debate on header sticky behavior before Task 064a build, similar pattern to ADR-16 / Task 066 cart pattern debate. Evidence research showed gallery e-commerce convention (Saatchi, Artsy, MoMA Design Store, Hauser & Wirth, David Zwirner) uses sticky=always. Brand argument flipped during debate: cold-gallery aesthetic FAVORS always-visible header (header IS the wayfinding anchor for curated-catalog deep browsing). Viewport footprint math: 64px header on 100vh viewport = 7.1% desktop / 8.6% mobile = negligible content occlusion. Polène-pattern misattribution caught (Polène uses sticky=always, not scroll-up-only). ADR-17 added to Section 5 recording the re-validation event. Pattern: tri-AI debate is the now-established methodology for re-opening or locking ADRs against new evidence claims (also see ADR-16 Task 066 precedent).
 
 ### 16.3 Open question to surface with operator at next session
 
