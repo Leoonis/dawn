@@ -25,7 +25,7 @@
 
 /* Header background must span viewport, not content rail */
 .header-wrapper {
-  background-color: var(--color-background);
+  background-color: rgb(var(--color-background));
 }
 
 .header.page-width {
