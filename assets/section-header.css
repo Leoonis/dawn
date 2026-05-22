@@ -6,7 +6,8 @@
    Loaded in layout/theme.liquid AFTER base.css + brand-tokens.css.
    Tokens consumed: --color-border-subtle,
                     --color-text-secondary,
-                    --color-text-primary
+                    --color-text-primary,
+                    --color-background
    =========================================================== */
 
 /* Heights - override Dawn's padding-driven sizing */
@@ -20,6 +21,15 @@
   .section-header {
     height: 64px;
   }
+}
+
+/* Header background must span viewport, not content rail */
+.header-wrapper {
+  background-color: var(--color-background);
+}
+
+.header.page-width {
+  background-color: transparent;
 }
 
 /* Border-bottom token enforcement (override Dawn's rgba alpha approximation) */
