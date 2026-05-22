@@ -6,8 +6,7 @@
    Loaded in layout/theme.liquid AFTER base.css + brand-tokens.css.
    Tokens consumed: --color-border-subtle,
                     --color-text-secondary,
-                    --color-text-primary,
-                    --color-background
+                    --color-text-primary
    =========================================================== */
 
 /* Heights - override Dawn's padding-driven sizing */
@@ -23,13 +22,14 @@
   }
 }
 
-/* Header background must span viewport, not content rail */
+/* Header wrapper must fill parent flex container width.
+   Dawn section-header parent uses display:flex; sticky-header
+   custom element defaults to flex-grow:0 = intrinsic content
+   width only. flex:1 stretches to parent (viewport) width,
+   making Dawn's existing background-color paint edge-to-edge. */
 .header-wrapper {
-  background-color: rgb(var(--color-background));
-}
-
-.header.page-width {
-  background-color: transparent;
+  flex: 1;
+  width: 100%;
 }
 
 /* Border-bottom token enforcement (override Dawn's rgba alpha approximation) */
