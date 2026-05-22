@@ -42,7 +42,7 @@
 }
 
 /* Account icon - defense-in-depth hide (schema also disables enable_customer_avatar) */
-.header__icon--account {
+.header__icon.header__icon--account {
   display: none;
 }
 
