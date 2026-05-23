@@ -10,3 +10,16 @@ Thumbs.db
 .shopify
 
 .claude/
+
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+.eslintcache
+
+# Local env / secrets
+.env
+.env.local
+.env.*.local
