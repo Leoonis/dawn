@@ -501,6 +501,23 @@ re-reference this file.
 
 ---
 
+### `settings_data.json` dual-write protocol
+
+`config/settings_data.json` is touched by TWO write surfaces:
+
+1. Claude Code (this repo's git lane) — modifies via `Write` tool
+2. Shopify Theme Editor (Eduard-side, dev store admin UI) — modifies server-side, syncs back to repo
+
+Race condition pattern: if both surfaces write between syncs, the second write silently overwrites the first.
+
+Required hygiene before ANY commit touching settings_data.json:
+
+1. `git pull --rebase` to fetch latest Shopify-side writes
+2. Verify settings_data.json in working tree is current
+3. Edit + commit + push immediately
+
+If a Theme Editor edit landed between your `git pull` and `git push`, re-pull and reconcile manually. Source: Chiarivista AI cross-audit feedback 2026-05-23.
+
 ## ACCEPTANCE CHECKLIST PER SECTION TYPE
 
 ### Custom section (Tasks 053-062)
