@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-links",
+      "settings": {
+        "heading_text": "Noctorya",
+        "subheading_text": "The Minimal Black Gallery"
+      },
+      "blocks": {},
+      "block_order": []
+    }
+  },
+  "order": ["main"]
+}
