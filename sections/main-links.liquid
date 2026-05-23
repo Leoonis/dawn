@@ -151,7 +151,8 @@
                   default; social-bio traffic prefers same-tab navigation.
                 {%- endcomment -%}
                 {%- assign is_external = true -%}
-                {%- if link_url startswith '/' -%}
+                {%- assign url_first_char = link_url | slice: 0, 1 -%}
+                {%- if url_first_char == '/' -%}
                   {%- assign is_external = false -%}
                 {%- endif -%}
                 <li class="main-links__item" {{ block.shopify_attributes }}>
